@@ -57,14 +57,94 @@
 		88A398962CC8B25500EFED0D /* Weather */ = {
 			isa = PBXGroup;
 			children = (
-				88A398972CC8B25500EFED0D /* AppDelegate.swift */,
-				88A398992CC8B25500EFED0D /* SceneDelegate.swift */,
-				88A3989B2CC8B25500EFED0D /* WeatherViewController.swift */,
+				88A398B82CC8E52C00EFED0D /* Application */,
+				88A398B52CC8E42000EFED0D /* Model */,
+				88A398B42CC8E41A00EFED0D /* Protocol */,
+				88A398B32CC8E40F00EFED0D /* Base */,
+				88A398B22CC8E33400EFED0D /* CustomView */,
+				88A398B12CC8E32A00EFED0D /* Scene */,
+				88A398B02CC8E32200EFED0D /* Extension */,
+				88A398AF2CC8E31000EFED0D /* Network */,
 				88A398A02CC8B25600EFED0D /* Assets.xcassets */,
 				88A398A22CC8B25600EFED0D /* LaunchScreen.storyboard */,
 				88A398A52CC8B25600EFED0D /* Info.plist */,
 			);
 			path = Weather;
+			sourceTree = "<group>";
+		};
+		88A398AF2CC8E31000EFED0D /* Network */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		88A398B02CC8E32200EFED0D /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		88A398B12CC8E32A00EFED0D /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				88A398B72CC8E52100EFED0D /* Search */,
+				88A398B62CC8E51800EFED0D /* Weather */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		88A398B22CC8E33400EFED0D /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CustomView;
+			sourceTree = "<group>";
+		};
+		88A398B32CC8E40F00EFED0D /* Base */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		88A398B42CC8E41A00EFED0D /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		88A398B52CC8E42000EFED0D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		88A398B62CC8E51800EFED0D /* Weather */ = {
+			isa = PBXGroup;
+			children = (
+				88A3989B2CC8B25500EFED0D /* WeatherViewController.swift */,
+			);
+			path = Weather;
+			sourceTree = "<group>";
+		};
+		88A398B72CC8E52100EFED0D /* Search */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		88A398B82CC8E52C00EFED0D /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				88A398972CC8B25500EFED0D /* AppDelegate.swift */,
+				88A398992CC8B25500EFED0D /* SceneDelegate.swift */,
+			);
+			path = Application;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
