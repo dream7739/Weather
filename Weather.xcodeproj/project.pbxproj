@@ -13,6 +13,7 @@
 		88A398A12CC8B25600EFED0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88A398A02CC8B25600EFED0D /* Assets.xcassets */; };
 		88A398A42CC8B25600EFED0D /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 88A398A32CC8B25600EFED0D /* Base */; };
 		88A398AE2CC8E23100EFED0D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 88A398AD2CC8E23100EFED0D /* .gitignore */; };
+		88A398BA2CC8E58200EFED0D /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A398B92CC8E58200EFED0D /* APIKey.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		88A398A32CC8B25600EFED0D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		88A398A52CC8B25600EFED0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		88A398AD2CC8E23100EFED0D /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		88A398B92CC8E58200EFED0D /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 				88A398A02CC8B25600EFED0D /* Assets.xcassets */,
 				88A398A22CC8B25600EFED0D /* LaunchScreen.storyboard */,
 				88A398A52CC8B25600EFED0D /* Info.plist */,
+				88A398B92CC8E58200EFED0D /* APIKey.swift */,
 			);
 			path = Weather;
 			sourceTree = "<group>";
@@ -220,6 +223,7 @@
 			files = (
 				88A3989C2CC8B25500EFED0D /* WeatherViewController.swift in Sources */,
 				88A398982CC8B25500EFED0D /* AppDelegate.swift in Sources */,
+				88A398BA2CC8E58200EFED0D /* APIKey.swift in Sources */,
 				88A3989A2CC8B25500EFED0D /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
