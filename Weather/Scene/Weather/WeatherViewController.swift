@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class WeatherViewController: UIViewController {
+final class WeatherViewController: BaseViewController {
 
     private let viewModel = WeatherViewModel()
     private let disposeBag = DisposeBag()
