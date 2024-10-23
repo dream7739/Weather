@@ -18,6 +18,7 @@ struct WeatherInfo: Decodable {
     let main: MainInfo
     let weather: [Weather]
     let clouds: Cloud
+    let wind: Wind
     let dt_txt: String
 }
 
@@ -37,17 +38,17 @@ struct Weather: Decodable {
 }
 
 struct Cloud: Decodable {
-    let all: Int
+    let all: Double
+}
+
+struct Wind: Decodable {
+    let speed: Double
 }
 
 struct CityInfo: Decodable {
     let id: Int
     let name: String
     let coord: Coord
-}
-
-struct Wind: Decodable {
-    let speed: Double
 }
 
 struct City: Decodable {
