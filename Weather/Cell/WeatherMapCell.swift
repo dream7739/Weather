@@ -25,6 +25,8 @@ final class WeatherMapCell: BaseCollectionViewCell {
     override func configureUI() {
         mapView.overrideUserInterfaceStyle = .dark
         mapView.isScrollEnabled = false
+        mapView.isZoomEnabled = false
+        mapView.layer.cornerRadius = 4
     }
     
     func configureData(_ data: MapWeather){

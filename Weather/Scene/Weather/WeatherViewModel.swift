@@ -33,17 +33,17 @@ final class WeatherViewModel: BaseViewModel {
                     let mainWeather = owner.createMainWeather(result: value)
                     let hourWeatherSection = owner.createHourWeather(result: value)
                     let weekWeatherSection = owner.createWeekWeather(result: value)
-                    let mapWeather = owner.createMapWeather(result: value)
+                    let mapWeatherSection = owner.createMapWeather(result: value)
                     let detailWeather = owner.createDetailWeather(result: value)
                     
                     let mainSection = WeatherSectionModel.main(items: [.main(data: mainWeather)])
-                    let mapSection = WeatherSectionModel.map(items: [.map(data: mapWeather)])
                     let detailSection = WeatherSectionModel.map(items: [.detail(data: detailWeather)])
+                    
                     let sectionModel = [
                         mainSection,
                         hourWeatherSection,
                         weekWeatherSection,
-                        mapSection,
+                        mapWeatherSection,
                         detailSection
                     ]
                     sections.accept(sectionModel)
@@ -140,11 +140,12 @@ extension WeatherViewModel {
         return weekSection
     }
     
-    private func createMapWeather(result: WeatherResult) -> MapWeather {
-        return MapWeather(
-            lat: 36.783611,
-            lon: 127.004173
-        )
+    private func createMapWeather(result: WeatherResult) -> WeatherSectionModel {
+        let coord = result.city.coord
+        let mapWeather = MapWeather(lat: coord.lat, lon: coord.lon)
+        let mapItem = SectionItem.map(data: mapWeather)
+        let mapSection = WeatherSectionModel.map(items: [mapItem])
+        return mapSection
     }
     
     private func createDetailWeather(result: WeatherResult) -> DetailWeather {

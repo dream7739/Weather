@@ -236,7 +236,7 @@ extension WeatherViewController {
     private func createMapSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .absolute(300)
+            heightDimension: .fractionalWidth(1)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
@@ -246,12 +246,13 @@ extension WeatherViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(
             top: 0,
-            leading: 15,
+            leading: 10,
             bottom: 10,
-            trailing: 15
+            trailing: 10
         )
-        
         let header = createHeader()
+        let backgroundItem = NSCollectionLayoutDecorationItem.background(elementKind: WeatherBackgroundView.reuseIdentifier)
+        section.decorationItems = [backgroundItem]
         section.boundarySupplementaryItems = [header]
         return section
     }
@@ -289,7 +290,7 @@ extension WeatherViewController {
     private func createHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
         let headerSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .absolute(44)
+            heightDimension: .absolute(30)
         )
         return NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerSize,
