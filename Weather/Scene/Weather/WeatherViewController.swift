@@ -122,11 +122,14 @@ extension WeatherViewController {
                 return self?.createDetailsSection()
             }
         }
+        
         layout.register(
             WeatherBackgroundView.self,
             forDecorationViewOfKind: WeatherBackgroundView.reuseIdentifier
         )
-        
+        let configuration = UICollectionViewCompositionalLayoutConfiguration()
+        configuration.interSectionSpacing = 15
+        layout.configuration = configuration
         return layout
     }
     
@@ -219,11 +222,13 @@ extension WeatherViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(
             top: 0,
-            leading: 15,
+            leading: 10,
             bottom: 10,
-            trailing: 15
+            trailing: 10
         )
         let header = createHeader()
+        let backgroundItem = NSCollectionLayoutDecorationItem.background(elementKind: WeatherBackgroundView.reuseIdentifier)
+        section.decorationItems = [backgroundItem]
         section.boundarySupplementaryItems = [header]
         return section
     }

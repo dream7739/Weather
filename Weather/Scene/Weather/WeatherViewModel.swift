@@ -32,18 +32,17 @@ final class WeatherViewModel: BaseViewModel {
                 case .success(let value):
                     let mainWeather = owner.createMainWeather(result: value)
                     let hourWeatherSection = owner.createHourWeather(result: value)
-                    let weekWeather = owner.createWeekWeather(result: value)
+                    let weekWeatherSection = owner.createWeekWeather(result: value)
                     let mapWeather = owner.createMapWeather(result: value)
                     let detailWeather = owner.createDetailWeather(result: value)
                     
                     let mainSection = WeatherSectionModel.main(items: [.main(data: mainWeather)])
-                    let weekSection = WeatherSectionModel.week(items: [.week(data: weekWeather)])
                     let mapSection = WeatherSectionModel.map(items: [.map(data: mapWeather)])
                     let detailSection = WeatherSectionModel.map(items: [.detail(data: detailWeather)])
                     let sectionModel = [
                         mainSection,
                         hourWeatherSection,
-                        weekSection,
+                        weekWeatherSection,
                         mapSection,
                         detailSection
                     ]
@@ -76,7 +75,6 @@ extension WeatherViewModel {
         let date = Date()
         let current = date.toTimeInterval
         let dayAfterTomorrow = date.dayAfterTomorrow.toTimeInterval
-        
         let hourWeatherList = result.list.filter {
             $0.dt >= current && $0.dt < dayAfterTomorrow
         }
@@ -85,7 +83,7 @@ extension WeatherViewModel {
             let date = Date(timeIntervalSinceReferenceDate: TimeInterval($0.dt))
             let hour = date.toApmFormat
             let weather = WeatherConstant($0.weather.first?.icon ?? "01d").rawValue
-            let temp = String(format: "%.f", $0.main.temp) + "°"
+            let temp = $0.main.temp.toTmpFormat
             
             return SectionItem.hour(
                 data: HourWeather(
@@ -100,13 +98,46 @@ extension WeatherViewModel {
         return hourSection
     }
     
-    private func createWeekWeather(result: WeatherResult) -> WeekWeather {
-        return WeekWeather(
-            weekDay: "월",
-            weather: "10d",
-            lowTemp: "10",
-            highTemp: "30"
-        )
+    //5일간의 일기예보
+    private func createWeekWeather(result: WeatherResult) -> WeatherSectionModel {
+        let date = Date()
+        let weekDayList = date.weekDays
+        var weekWeatherList: [WeekWeather] = []
+
+        for i in 0..<weekDayList.count - 1 {
+            let dayWeatherList = result.list.filter {
+                $0.dt >= weekDayList[i].toTimeInterval &&
+                $0.dt < weekDayList[i+1].toTimeInterval
+            }
+            
+            let weekDate = weekDayList[i]
+            var weekDay: String
+            if Calendar.current.startOfDay(for: date) == weekDate {
+                weekDay = "오늘"
+            } else {
+                weekDay = DateFormatterManager.dayFormatter.string(from: weekDayList[i])
+            }
+            let weather = WeatherConstant(dayWeatherList.first?.weather.first?.icon ?? "01d").rawValue
+            let lowTemp = dayWeatherList
+                .map { $0.main.temp_min }
+                .min { $0 < $1 } ?? 0
+            let highTemp = dayWeatherList
+                .map { $0.main.temp_max }
+                .max { $0 > $1 } ?? 0
+            
+            let weekWeather = WeekWeather(
+                weekDay: weekDay,
+                weather: weather,
+                lowTemp: "최소: " + lowTemp.toTmpFormat,
+                highTemp: "최대: " + highTemp.toTmpFormat
+            )
+            
+            weekWeatherList.append(weekWeather)
+        }
+        
+        let weekItemList = weekWeatherList.map { SectionItem.week(data: $0) }
+        let weekSection = WeatherSectionModel.week(items: weekItemList)
+        return weekSection
     }
     
     private func createMapWeather(result: WeatherResult) -> MapWeather {

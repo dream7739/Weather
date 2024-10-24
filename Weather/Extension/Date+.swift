@@ -19,4 +19,15 @@ extension Date {
     var toApmFormat: String {
         return DateFormatterManager.apmFormatter.string(from: self)
     }
+    
+    var weekDays: [Date] {
+        var weekDayList: [Date] = []
+        let today = Calendar.current.startOfDay(for: self)
+        weekDayList.append(today)
+        for i in 1...5 {
+            let weekDay = Calendar.current.date(byAdding: .day, value: i, to: today) ?? Date()
+            weekDayList.append(weekDay)
+        }
+        return weekDayList
+    }
 }

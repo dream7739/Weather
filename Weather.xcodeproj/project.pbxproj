@@ -44,6 +44,7 @@
 		88A398EA2CC91B5B00EFED0D /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A398E92CC91B5B00EFED0D /* BaseViewController.swift */; };
 		88A398EC2CC91B9000EFED0D /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A398EB2CC91B9000EFED0D /* BaseView.swift */; };
 		88A398EE2CC91BDF00EFED0D /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A398ED2CC91BDF00EFED0D /* BaseCollectionViewCell.swift */; };
+		88D1101D2CCA7E7A00DFC703 /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D1101C2CCA7E7A00DFC703 /* Double+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +82,7 @@
 		88A398E92CC91B5B00EFED0D /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		88A398EB2CC91B9000EFED0D /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		88A398ED2CC91BDF00EFED0D /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
+		88D1101C2CCA7E7A00DFC703 /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				884021B02CCA23BC00155DE8 /* Date+.swift */,
+				88D1101C2CCA7E7A00DFC703 /* Double+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -347,6 +350,7 @@
 				883ECBD52CC94E8E0093D930 /* WeatherMainCell.swift in Sources */,
 				883ECBD72CC94FA30093D930 /* MainWeather.swift in Sources */,
 				88A398D22CC8F27700EFED0D /* NetworkManager.swift in Sources */,
+				88D1101D2CCA7E7A00DFC703 /* Double+.swift in Sources */,
 				88A398EE2CC91BDF00EFED0D /* BaseCollectionViewCell.swift in Sources */,
 				88A398EC2CC91B9000EFED0D /* BaseView.swift in Sources */,
 				889EEAE82CCA594900688A65 /* WeatherBackgroundView.swift in Sources */,

@@ -28,13 +28,14 @@ final class WeekWeatherCell: BaseCollectionViewCell {
         }
         
         weatherImageView.snp.makeConstraints { make in
-            make.trailing.equalTo(lowTempLabel.snp.leading).offset(-10)
             make.centerY.equalTo(contentView.safeAreaLayoutGuide)
+            make.centerX.equalTo(contentView.safeAreaLayoutGuide).multipliedBy(0.6)
             make.size.equalTo(30)
         }
         
         lowTempLabel.snp.makeConstraints { make in
-            make.center.equalTo(contentView.safeAreaLayoutGuide)
+            make.centerY.equalTo(contentView.safeAreaLayoutGuide)
+            make.trailing.equalTo(highTempLabel.snp.leading).offset(-8)
         }
         
         highTempLabel.snp.makeConstraints { make in
@@ -55,9 +56,8 @@ final class WeekWeatherCell: BaseCollectionViewCell {
     
     func configureData(_ data: WeekWeather){
         weekDayLabel.text = data.weekDay
-        //MARK: 추후 삭제
-        weatherImageView.image = UIImage(systemName: "sun.max.fill")
-        lowTempLabel.text = "최저 " + data.lowTemp
-        highTempLabel.text = "최고 " + data.highTemp
+        weatherImageView.image = UIImage(named: data.weather)
+        lowTempLabel.text = data.lowTemp
+        highTempLabel.text = data.highTemp
     }
 }
