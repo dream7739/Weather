@@ -38,18 +38,12 @@ final class HourWeatherCell: BaseCollectionViewCell {
     }
     
     override func configureUI() {
-        backgroundColor = UIColor.white.withAlphaComponent(0.3)
-        
         timeLabel.font = .systemFont(ofSize: 15)
         timeLabel.textColor = .white
         timeLabel.textAlignment = .center
         
         weatherImageView.contentMode = .scaleAspectFit
         weatherImageView.tintColor = .white
-        
-        //MARK: 추후 삭제
-        weatherImageView.image = UIImage(systemName: "sun.max.fill")
-        
         temperatureLabel.font = .systemFont(ofSize: 20)
         temperatureLabel.textColor = .white
         temperatureLabel.textAlignment = .center
@@ -57,6 +51,7 @@ final class HourWeatherCell: BaseCollectionViewCell {
     
     func configureData(_ data: HourWeather) {
         timeLabel.text = data.hour
-        temperatureLabel.text = "\(data.temp)°"
+        weatherImageView.image = UIImage(named: data.weather)
+        temperatureLabel.text = data.temp
     }
 }

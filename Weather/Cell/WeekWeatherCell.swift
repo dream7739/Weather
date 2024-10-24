@@ -45,8 +45,6 @@ final class WeekWeatherCell: BaseCollectionViewCell {
     }
     
     override func configureUI() {
-        backgroundColor = UIColor.white.withAlphaComponent(0.3)
-
         weekDayLabel.textColor = .white
         weekDayLabel.font = .systemFont(ofSize: 18)
         lowTempLabel.textColor = .white

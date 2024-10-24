@@ -35,9 +35,7 @@ final class WeatherDetailCell: BaseCollectionViewCell {
         }
     }
     
-    override func configureUI() {
-        backgroundColor = UIColor.white.withAlphaComponent(0.3)
-        
+    override func configureUI() {        
         titleLabel.textColor = .white
         titleLabel.font = .systemFont(ofSize: 12)
         averageLabel.textColor = .white

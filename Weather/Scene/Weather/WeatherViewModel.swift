@@ -22,31 +22,27 @@ final class WeatherViewModel: BaseViewModel {
     
     func transform(input: Input) -> Output {
         let sections = BehaviorRelay<[WeatherSectionModel]>(value: [])
-
+        
         input.callWeatherRequest
             .flatMap { coord in
                 NetworkManager.shared.callRequest(coord)
             }
-            .subscribe(with: self) {
-                owner,
-                result in
+            .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let value):
-                    print(value)
                     let mainWeather = owner.createMainWeather(result: value)
-                    let hourWeather = owner.createHourWeather(result: value)
+                    let hourWeatherSection = owner.createHourWeather(result: value)
                     let weekWeather = owner.createWeekWeather(result: value)
                     let mapWeather = owner.createMapWeather(result: value)
                     let detailWeather = owner.createDetailWeather(result: value)
                     
                     let mainSection = WeatherSectionModel.main(items: [.main(data: mainWeather)])
-                    let hourSection = WeatherSectionModel.hour(items: [.hour(data: hourWeather)])
                     let weekSection = WeatherSectionModel.week(items: [.week(data: weekWeather)])
                     let mapSection = WeatherSectionModel.map(items: [.map(data: mapWeather)])
                     let detailSection = WeatherSectionModel.map(items: [.detail(data: detailWeather)])
                     let sectionModel = [
                         mainSection,
-                        hourSection,
+                        hourWeatherSection,
                         weekSection,
                         mapSection,
                         detailSection
@@ -57,13 +53,15 @@ final class WeatherViewModel: BaseViewModel {
                 }
             }
             .disposed(by: disposeBag)
-
+        
         return Output(sections: sections)
     }
 }
 
 extension WeatherViewModel {
+    // 메인 날씨
     private func createMainWeather(result: WeatherResult) -> MainWeather {
+        
         return MainWeather(
             city: "Seoul",
             temperature: 30,
@@ -73,12 +71,33 @@ extension WeatherViewModel {
         )
     }
     
-    private func createHourWeather(result: WeatherResult) -> HourWeather {
-        return HourWeather(
-            hour: "12",
-            weather: "10d",
-            temp: "30"
-        )
+    // 3시간 간격의 일기예보
+    private func createHourWeather(result: WeatherResult) -> WeatherSectionModel {
+        let date = Date()
+        let current = date.toTimeInterval
+        let dayAfterTomorrow = date.dayAfterTomorrow.toTimeInterval
+        
+        let hourWeatherList = result.list.filter {
+            $0.dt >= current && $0.dt < dayAfterTomorrow
+        }
+        
+        let hourItemList = hourWeatherList.map {
+            let date = Date(timeIntervalSinceReferenceDate: TimeInterval($0.dt))
+            let hour = date.toApmFormat
+            let weather = WeatherConstant($0.weather.first?.icon ?? "01d").rawValue
+            let temp = String(format: "%.f", $0.main.temp) + "°"
+            
+            return SectionItem.hour(
+                data: HourWeather(
+                    hour: hour,
+                    weather: weather,
+                    temp: temp
+                )
+            )
+        }
+        
+        let hourSection = WeatherSectionModel.hour(items: hourItemList)
+        return hourSection
     }
     
     private func createWeekWeather(result: WeatherResult) -> WeekWeather {

@@ -23,7 +23,6 @@ final class WeatherMapCell: BaseCollectionViewCell {
         }
     }
     override func configureUI() {
-        contentView.backgroundColor = UIColor.white.withAlphaComponent(0.3)
         mapView.overrideUserInterfaceStyle = .dark
         mapView.isScrollEnabled = false
     }

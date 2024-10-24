@@ -28,7 +28,6 @@ final class WeatherViewController: BaseViewController {
         bind()
         configureSearchController()
         configureCollectionView()
-        
     }
     
     override func configureHierarchy() {
@@ -123,6 +122,11 @@ extension WeatherViewController {
                 return self?.createDetailsSection()
             }
         }
+        layout.register(
+            WeatherBackgroundView.self,
+            forDecorationViewOfKind: WeatherBackgroundView.reuseIdentifier
+        )
+        
         return layout
     }
     
@@ -179,31 +183,26 @@ extension WeatherViewController {
     }
     
     private func createHourlySection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(1)
-        )
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2),
+                                              heightDimension: .absolute(100))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(80),
-            heightDimension: .absolute(100)
-        )
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: groupSize,
-            subitems: [item]
-        )
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8),
+                                               heightDimension: .absolute(100))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .continuous
-        section.interGroupSpacing = 10
-        section.contentInsets = NSDirectionalEdgeInsets(
-            top: 0,
-            leading: 15,
-            bottom: 10,
-            trailing: 15
-        )
         let header = createHeader()
         section.boundarySupplementaryItems = [header]
-
+        let backgroundItem = NSCollectionLayoutDecorationItem.background(elementKind: WeatherBackgroundView.reuseIdentifier)
+        section.decorationItems = [backgroundItem]
+        
+        section.contentInsets = NSDirectionalEdgeInsets(
+            top: 0,
+            leading: 10,
+            bottom: 10,
+            trailing: 10
+        )
+        section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
         return section
     }
     

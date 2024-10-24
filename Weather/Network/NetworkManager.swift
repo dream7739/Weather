@@ -14,7 +14,7 @@ final class NetworkManager {
     private init() { }
     
     func callRequest(_ coord: Coord) -> Single<Result<WeatherResult, Error>> {
-        let url = APIURL.forecast + "?lat=\(coord.lat)&lon=\(coord.lon)&appid=\(APIKey.weather)"
+        let url = APIURL.forecast + "?lat=\(coord.lat)&lon=\(coord.lon)&units=metric&appid=\(APIKey.weather)"
         let result = Single<Result<WeatherResult, Error>>.create { observer in
             AF.request(url)
                 .validate(statusCode: 200...400)

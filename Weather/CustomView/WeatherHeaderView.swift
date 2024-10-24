@@ -20,7 +20,6 @@ final class WeatherHeaderView: UICollectionReusableView {
         super.init(frame: frame)
         configureHierarchy()
         configureLayout()
-        configureUI()
     }
     
     required init?(coder: NSCoder) {
@@ -36,12 +35,6 @@ final class WeatherHeaderView: UICollectionReusableView {
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().offset(8)
         }
-    }
-    
-    private func configureUI() {
-        layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        layer.cornerRadius = 15
-        backgroundColor = UIColor.white.withAlphaComponent(0.3)
     }
     
     func setTitle(_ title: String) {
