@@ -30,4 +30,12 @@ extension Date {
         }
         return weekDayList
     }
+    
+    func getMostRecentWeather(timeIntervals: [Int]) -> Int {
+        let currentTime = self.toTimeInterval
+        let recentTime =  timeIntervals.min {
+            abs($0 - currentTime) < abs($1 - currentTime)
+        } ?? currentTime
+        return recentTime
+    }
 }

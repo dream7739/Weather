@@ -197,6 +197,7 @@ extension WeatherViewController {
         let header = createHeader()
         section.boundarySupplementaryItems = [header]
         let backgroundItem = NSCollectionLayoutDecorationItem.background(elementKind: WeatherBackgroundView.reuseIdentifier)
+        
         section.decorationItems = [backgroundItem]
         
         section.contentInsets = NSDirectionalEdgeInsets(

@@ -63,8 +63,8 @@ final class WeatherMainCell: BaseCollectionViewCell {
     
     func configureData(_ data: MainWeather) {
         cityLabel.text = data.city
-        temperatureLabel.text = "\(data.temperature)°"
+        temperatureLabel.text = data.temperature
         descriptionLabel.text = data.description
-        highLowLabel.text = "최고: \(data.highTemp)° | 최저: \(data.lowTemp)°"
+        highLowLabel.text = "최고: \(data.highTemp) | 최저: \(data.lowTemp)"
     }
 }

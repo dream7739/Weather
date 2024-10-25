@@ -217,10 +217,10 @@
 		88A398B52CC8E42000EFED0D /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				88A398E72CC919B500EFED0D /* DetailWeather.swift */,
 				88A398CC2CC8EC8C00EFED0D /* WeatherResult.swift */,
 				88A398E32CC9154100EFED0D /* HourWeather.swift */,
 				88A398E52CC9156500EFED0D /* WeekWeather.swift */,
-				88A398E72CC919B500EFED0D /* DetailWeather.swift */,
 				883ECBD62CC94FA30093D930 /* MainWeather.swift */,
 				884021A72CC9EAE900155DE8 /* WeatherSectionModel.swift */,
 				884021AC2CC9EF1600155DE8 /* MapWeather.swift */,

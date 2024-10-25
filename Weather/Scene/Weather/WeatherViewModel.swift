@@ -30,16 +30,14 @@ final class WeatherViewModel: BaseViewModel {
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let value):
-                    let mainWeather = owner.createMainWeather(result: value)
+                    let mainWeatherSection = owner.createMainWeather(result: value)
                     let hourWeatherSection = owner.createHourWeather(result: value)
                     let weekWeatherSection = owner.createWeekWeather(result: value)
                     let mapWeatherSection = owner.createMapWeather(result: value)
                     let detailWeatherSection = owner.createDetailWeather(result: value)
                     
-                    let mainSection = WeatherSectionModel.main(items: [.main(data: mainWeather)])
-                    
                     let sectionModel = [
-                        mainSection,
+                        mainWeatherSection,
                         hourWeatherSection,
                         weekWeatherSection,
                         mapWeatherSection,
@@ -58,15 +56,35 @@ final class WeatherViewModel: BaseViewModel {
 
 extension WeatherViewModel {
     // 메인 날씨
-    private func createMainWeather(result: WeatherResult) -> MainWeather {
+    private func createMainWeather(result: WeatherResult) -> WeatherSectionModel {
+        let timeList = result.list.map { $0.dt }
+        let recentTime = Date().getMostRecentWeather(timeIntervals: timeList)
+        let recentWeather = result.list.filter { $0.dt == recentTime }.first
+
+        guard let recentWeather else {
+            return WeatherSectionModel.map(items: [])
+        }
         
-        return MainWeather(
-            city: "Seoul",
-            temperature: 30,
-            description: "맑음",
-            highTemp: 30,
-            lowTemp: 10
+        let city = result.city.name
+        let temp = recentWeather.main.temp.toString + "°"
+        let description = recentWeather.weather.first?.main ?? ""
+        let highTemp = recentWeather.main.temp_max.toString + "°"
+        let lowTemp = recentWeather.main.temp_min.toString + "°"
+        
+        let mainWeather = MainWeather(
+            city: city,
+            temperature: temp,
+            description: description,
+            highTemp: highTemp,
+            lowTemp: lowTemp
         )
+        
+        let mainItem = SectionItem.main(
+            data: mainWeather
+        )
+        
+        let mainSection = WeatherSectionModel.main(items: [mainItem])
+        return mainSection
     }
     
     // 3시간 간격의 일기예보

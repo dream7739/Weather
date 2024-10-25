@@ -9,8 +9,8 @@ import Foundation
 
 struct MainWeather {
     let city: String
-    let temperature: Int
+    let temperature: String
     let description: String
-    let highTemp: Int
-    let lowTemp: Int
+    let highTemp: String
+    let lowTemp: String
 }
