@@ -38,13 +38,13 @@ final class HourWeatherCell: BaseCollectionViewCell {
     }
     
     override func configureUI() {
-        timeLabel.font = .systemFont(ofSize: 15)
+        timeLabel.font = .systemFont(ofSize: 13)
         timeLabel.textColor = .white
         timeLabel.textAlignment = .center
         
         weatherImageView.contentMode = .scaleAspectFit
         weatherImageView.tintColor = .white
-        temperatureLabel.font = .systemFont(ofSize: 20)
+        temperatureLabel.font = .systemFont(ofSize: 16)
         temperatureLabel.textColor = .white
         temperatureLabel.textAlignment = .center
     }

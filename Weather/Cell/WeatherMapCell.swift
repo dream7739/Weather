@@ -18,8 +18,8 @@ final class WeatherMapCell: BaseCollectionViewCell {
     
     override func configureLayout() {
         mapView.snp.makeConstraints { make in
-            make.top.equalTo(contentView)
-            make.horizontalEdges.bottom.equalTo(contentView).inset(8)
+            make.verticalEdges.equalTo(contentView)
+            make.horizontalEdges.equalTo(contentView).inset(8)
         }
     }
     override func configureUI() {

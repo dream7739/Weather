@@ -53,6 +53,8 @@ final class WeatherDetailCell: BaseCollectionViewCell {
         averageLabel.text = data.average
         if let description = data.description {
             descriptionLabel.text = description
+        } else {
+            descriptionLabel.text = ""
         }
     }
 }
