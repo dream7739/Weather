@@ -7,9 +7,14 @@
 
 import Foundation
 
-struct DetailWeather: Hashable, Identifiable {
-    let id = UUID()
+struct DetailWeather {
     let title: String
     let average: String
     let description: String?
+    
+    init(title: String, average: String, description: String? = nil) {
+        self.title = title
+        self.average = average
+        self.description = description
+    }
 }

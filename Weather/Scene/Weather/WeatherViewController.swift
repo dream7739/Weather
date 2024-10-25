@@ -36,8 +36,8 @@ final class WeatherViewController: BaseViewController {
     
     override func configureLayout() {
         weatherCollectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.verticalEdges.equalToSuperview()
+            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
@@ -263,12 +263,6 @@ extension WeatherViewController {
             heightDimension: .fractionalWidth(0.5)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(
-            top: 5,
-            leading: 5,
-            bottom: 5,
-            trailing: 5
-        )
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .absolute(200)
@@ -277,6 +271,7 @@ extension WeatherViewController {
             layoutSize: groupSize,
             subitems: [item]
         )
+        group.interItemSpacing = .fixed(10)
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(
             top: 0,

@@ -8,7 +8,28 @@
 import Foundation
 
 extension Double {
-    var toTmpFormat: String {
-        return String(format: "%.f", self) + "°"
+    var toString: String {
+        return String(format: "%.f", self)
     }
+    
+    var toStatString: String {
+        return String(format: "%.2f", self)
+    }
+    
+//    var toPercentFormat: String {
+//        return toString + "%"
+//    }
+//    
+//    var toTempFormat: String {
+//        return toString + "°"
+//    }
+//    
+//    var toSpeedFormat: String {
+//        return toStatString + "m/s"
+//    }
+//    
+//    var toPressureFormat: String {
+//        let pressure = Int(self)
+//        return pressure.formatted() + "\nhpa"
+//    }
 }

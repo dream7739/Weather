@@ -43,6 +43,7 @@ struct Cloud: Decodable {
 
 struct Wind: Decodable {
     let speed: Double
+    let gust: Double
 }
 
 struct CityInfo: Decodable {

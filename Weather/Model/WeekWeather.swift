@@ -7,8 +7,7 @@
 
 import Foundation
 
-struct WeekWeather: Hashable, Identifiable {
-    let id = UUID()
+struct WeekWeather {
     let weekDay: String
     let weather: String
     let lowTemp: String

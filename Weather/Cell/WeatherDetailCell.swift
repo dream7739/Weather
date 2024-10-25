@@ -35,16 +35,20 @@ final class WeatherDetailCell: BaseCollectionViewCell {
         }
     }
     
-    override func configureUI() {        
+    override func configureUI() {    
+        backgroundColor = .white.withAlphaComponent(0.4)
+        layer.cornerRadius = 10
+        layer.masksToBounds = true
         titleLabel.textColor = .white
         titleLabel.font = .systemFont(ofSize: 12)
         averageLabel.textColor = .white
-        averageLabel.font = .systemFont(ofSize: 23, weight: .medium)
-        descriptionLabel.font = .systemFont(ofSize: 8)
+        averageLabel.numberOfLines = 2
+        averageLabel.font = .systemFont(ofSize: 32, weight: .medium)
+        descriptionLabel.font = .systemFont(ofSize: 12)
         descriptionLabel.textColor = .white
     }
     
-    func configureData(_ data: DetailWeather){
+    func configureData(_ data: DetailWeather) {
         titleLabel.text = data.title
         averageLabel.text = data.average
         if let description = data.description {

@@ -7,8 +7,7 @@
 
 import Foundation
 
-struct MainWeather: Hashable, Identifiable {
-    let id = UUID()
+struct MainWeather {
     let city: String
     let temperature: Int
     let description: String

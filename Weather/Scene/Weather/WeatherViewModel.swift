@@ -34,17 +34,16 @@ final class WeatherViewModel: BaseViewModel {
                     let hourWeatherSection = owner.createHourWeather(result: value)
                     let weekWeatherSection = owner.createWeekWeather(result: value)
                     let mapWeatherSection = owner.createMapWeather(result: value)
-                    let detailWeather = owner.createDetailWeather(result: value)
+                    let detailWeatherSection = owner.createDetailWeather(result: value)
                     
                     let mainSection = WeatherSectionModel.main(items: [.main(data: mainWeather)])
-                    let detailSection = WeatherSectionModel.map(items: [.detail(data: detailWeather)])
                     
                     let sectionModel = [
                         mainSection,
                         hourWeatherSection,
                         weekWeatherSection,
                         mapWeatherSection,
-                        detailSection
+                        detailWeatherSection
                     ]
                     sections.accept(sectionModel)
                 case .failure(let error):
@@ -82,8 +81,8 @@ extension WeatherViewModel {
         let hourItemList = hourWeatherList.map {
             let date = Date(timeIntervalSinceReferenceDate: TimeInterval($0.dt))
             let hour = date.toApmFormat
-            let weather = WeatherConstant($0.weather.first?.icon ?? "01d").rawValue
-            let temp = $0.main.temp.toTmpFormat
+            let weather = Constant.WeatherIcon($0.weather.first?.icon ?? "01d").rawValue
+            let temp = $0.main.temp.toString + "°"
             
             return SectionItem.hour(
                 data: HourWeather(
@@ -98,7 +97,7 @@ extension WeatherViewModel {
         return hourSection
     }
     
-    //5일간의 일기예보
+    // 5일간의 일기예보
     private func createWeekWeather(result: WeatherResult) -> WeatherSectionModel {
         let date = Date()
         let weekDayList = date.weekDays
@@ -117,7 +116,7 @@ extension WeatherViewModel {
             } else {
                 weekDay = DateFormatterManager.dayFormatter.string(from: weekDayList[i])
             }
-            let weather = WeatherConstant(dayWeatherList.first?.weather.first?.icon ?? "01d").rawValue
+            let weather = Constant.WeatherIcon(dayWeatherList.first?.weather.first?.icon ?? "01d").rawValue
             let lowTemp = dayWeatherList
                 .map { $0.main.temp_min }
                 .min { $0 < $1 } ?? 0
@@ -128,8 +127,8 @@ extension WeatherViewModel {
             let weekWeather = WeekWeather(
                 weekDay: weekDay,
                 weather: weather,
-                lowTemp: "최소: " + lowTemp.toTmpFormat,
-                highTemp: "최대: " + highTemp.toTmpFormat
+                lowTemp: "최소: " + lowTemp.toString + "°",
+                highTemp: "최대: " + highTemp.toString + "°"
             )
             
             weekWeatherList.append(weekWeather)
@@ -140,6 +139,7 @@ extension WeatherViewModel {
         return weekSection
     }
     
+    // 선택 도시 기반 지도
     private func createMapWeather(result: WeatherResult) -> WeatherSectionModel {
         let coord = result.city.coord
         let mapWeather = MapWeather(lat: coord.lat, lon: coord.lon)
@@ -148,11 +148,69 @@ extension WeatherViewModel {
         return mapSection
     }
     
-    private func createDetailWeather(result: WeatherResult) -> DetailWeather {
-        return DetailWeather(
-            title: "바람",
-            average: "30",
-            description: nil
+    // 습도, 구름, 바람속도, 기압 등 상세한 일기예보 * 평균값
+    private func createDetailWeather(result: WeatherResult) -> WeatherSectionModel {
+        let weatherList = result.list
+        let listCount = Double(weatherList.count)
+        
+        // 습도
+        let humidityList = weatherList.map { $0.main.humidity }
+        let humidityAvg = humidityList.reduce(into: 0) { $0 += $1 } / listCount
+        let humidity = humidityAvg.toString + "%"
+        let humidityItem = SectionItem.detail(
+            data: DetailWeather(
+                title: Constant.DetailTitle.humidity.rawValue,
+                average: humidity
+            )
         )
+        
+        // 구름
+        let cloudList = weatherList.map { $0.clouds.all }
+        let cloudAvg = cloudList.reduce(into: 0) { $0 += $1 } / listCount
+        let cloud = cloudAvg.toString + "%"
+        let cloudItem = SectionItem.detail(
+            data: DetailWeather(
+                title: Constant.DetailTitle.cloud.rawValue,
+                average: cloud
+            )
+        )
+        
+        // 바람속도
+        let windSpeedList = weatherList.map { $0.wind.speed }
+        let windSpeedAvg = windSpeedList.reduce(into: 0) { $0 += $1 } / listCount
+        let wind = windSpeedAvg.toStatString + "m/s"
+        
+        let gustList = weatherList.map { $0.wind.gust }
+        let gustAvg = gustList.reduce(into: 0) { $0 += $1 } / listCount
+        let gust = "강풍: " + gustAvg.toStatString + "m/s"
+        
+        let windItem = SectionItem.detail(
+            data: DetailWeather(
+                title: Constant.DetailTitle.windSpeed.rawValue,
+                average: wind,
+                description: gust
+            )
+        )
+        
+        // 기압
+        let pressureList = weatherList.map { $0.main.pressure }
+        let pressureAvg = pressureList.reduce(into: 0) { $0 += $1 } / listCount
+        let pressure = Int(pressureAvg).formatted(.number) + "\nhpa"
+        let pressureItem = SectionItem.detail(
+            data: DetailWeather(
+                title: Constant.DetailTitle.pressure.rawValue,
+                average: pressure
+            )
+        )
+        
+        let detailSection = WeatherSectionModel.map(
+            items: [
+                humidityItem,
+                cloudItem,
+                windItem,
+                pressureItem
+            ]
+        )
+        return detailSection
     }
 }
