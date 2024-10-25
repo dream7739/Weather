@@ -35,7 +35,6 @@ final class CitySearchCell: BaseCollectionViewCell {
         cityLabel.textColor = .white
         countryLabel.font = .systemFont(ofSize: 11)
         countryLabel.textColor = .white
-        contentView.backgroundColor = .green
     }
     
     func configureData(_ data: CityResult) {

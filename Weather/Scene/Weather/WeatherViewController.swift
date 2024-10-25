@@ -58,8 +58,26 @@ final class WeatherViewController: BaseViewController {
         let output = viewModel.transform(input: input)
         let dataSource = configureDataSource()
         
+        
         output.sections
             .bind(to: weatherCollectionView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+        
+        searchController.rx.present
+            .bind(with: self) { owner, _ in
+                guard let resultController = owner.searchController.searchResultsController as? CitySearchViewController else { return }
+                owner.searchController.showsSearchResultsController = true
+                resultController.searchResultUpdator.accept("")
+            }
+            .disposed(by: disposeBag)
+
+        searchController.searchBar.rx
+            .text
+            .orEmpty
+            .bind(with: self) { owner, searchText in
+                guard let resultController = owner.searchController.searchResultsController as? CitySearchViewController else { return }
+                resultController.searchResultUpdator.accept(searchText)
+            }
             .disposed(by: disposeBag)
         
     }
@@ -73,7 +91,6 @@ extension WeatherViewController {
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.backgroundColor = .clear
         searchController.searchBar.searchTextField.backgroundColor = .systemGray6.withAlphaComponent(0.6)
-        searchController.searchResultsUpdater = self
     }
     
     private func configureCollectionView() {
@@ -314,11 +331,5 @@ extension WeatherViewController {
             elementKind: UICollectionView.elementKindSectionHeader,
             alignment: .top
         )
-    }
-}
-
-extension WeatherViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        
     }
 }

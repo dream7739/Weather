@@ -16,6 +16,7 @@ final class CitySearchViewController: BaseViewController {
         frame: .zero,
         collectionViewLayout: createLayout()
     )
+    let searchResultUpdator = PublishRelay<String>()
     private let viewModel = CitySearchViewModel()
     private let disposeBag = DisposeBag()
 
@@ -43,7 +44,8 @@ final class CitySearchViewController: BaseViewController {
         let input = CitySearchViewModel.Input(
             jsonParseRequest: BehaviorRelay(
                 value: Constant.jsonFileName
-            )
+            ),
+            searchResultUpdator: searchResultUpdator
         )
         
         let output = viewModel.transform(input: input)
@@ -87,6 +89,7 @@ extension CitySearchViewController {
     }
     
     private func configureDataSource() -> RxCollectionViewSectionedReloadDataSource<SearchSectionModel> {
+        print(#function)
         return RxCollectionViewSectionedReloadDataSource(configureCell:  { dataSource, collectionView, indexPath, _ in
             switch dataSource[indexPath] {
             case .recent(let data):
