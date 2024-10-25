@@ -19,9 +19,10 @@ final class WeatherMapCell: BaseCollectionViewCell {
     override func configureLayout() {
         mapView.snp.makeConstraints { make in
             make.verticalEdges.equalTo(contentView)
-            make.horizontalEdges.equalTo(contentView).inset(8)
+            make.horizontalEdges.equalTo(contentView)
         }
     }
+    
     override func configureUI() {
         mapView.overrideUserInterfaceStyle = .dark
         mapView.isScrollEnabled = false

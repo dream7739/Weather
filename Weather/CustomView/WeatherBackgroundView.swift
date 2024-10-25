@@ -6,16 +6,23 @@
 //
 
 import UIKit
+import SnapKit
 
-final class WeatherBackgroundView: UICollectionReusableView {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .white.withAlphaComponent(0.4)
-        layer.cornerRadius = 10
-        layer.masksToBounds = true
+final class WeatherBackgroundView: BaseReusableView {
+    private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+    
+    override func configureHierarchy() {
+        addSubview(blurEffectView)
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func configureLayout() {
+        blurEffectView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+    
+    override func configureUI() {
+        layer.cornerRadius = 10
+        clipsToBounds = true
     }
 }

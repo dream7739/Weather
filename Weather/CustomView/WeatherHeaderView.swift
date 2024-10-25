@@ -8,33 +8,23 @@
 import UIKit
 import SnapKit
 
-final class WeatherHeaderView: UICollectionReusableView {
-    private let titleLabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 12)
-        label.textColor = .white
-        return label
-    }()
+final class WeatherHeaderView: BaseReusableView {
+    private let titleLabel = UILabel()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configureHierarchy()
-        configureLayout()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
-    
-    private func configureHierarchy() {
+    override func configureHierarchy() {
         addSubview(titleLabel)
     }
     
-    private func configureLayout() {
+    override func configureLayout() {
         titleLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().offset(8)
+            make.top.equalToSuperview().offset(15)
+            make.leading.equalToSuperview()
         }
+    }
+    
+    override func configureUI() {
+        titleLabel.font = .systemFont(ofSize: 14)
+        titleLabel.textColor = .white
     }
     
     func setTitle(_ title: String) {

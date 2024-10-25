@@ -8,8 +8,7 @@
 import UIKit
 import SnapKit
 
-final class SeperatorView: BaseView {
-    
+final class SeperatorView: BaseView {    
     override func configureHierarchy() {
         snp.makeConstraints { make in
             make.height.equalTo(0.7)

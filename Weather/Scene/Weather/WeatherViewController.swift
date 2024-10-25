@@ -295,9 +295,9 @@ extension WeatherViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(
             top: 0,
-            leading: 20,
+            leading: 30,
             bottom: 15,
-            trailing: 20
+            trailing: 30
         )
         
         let header = createHeader()
@@ -343,7 +343,7 @@ extension WeatherViewController {
     private func createHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
         let headerSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .absolute(30)
+            heightDimension: .absolute(40)
         )
         return NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerSize,
