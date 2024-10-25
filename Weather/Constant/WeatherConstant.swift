@@ -47,6 +47,36 @@ enum Constant {
         }
     }
     
+    enum WeatherBackgroundImage: String {
+        case thunderstorm
+        case fog
+        case clouds
+        case rain
+        case snow
+        case sunny
+        
+        init(conditionCode: Int) {
+            switch conditionCode {
+            case 200..<300:
+                self = .thunderstorm
+            case 300..<400:
+                self = .rain
+            case 500..<600:
+                self = .rain
+            case 600..<700:
+                self = .snow
+            case 700..<800:
+                self = .fog
+            case 800:
+                self = .sunny
+            case 801..<900:
+                self = .clouds
+            default:
+                self = .sunny
+            }
+        }
+    }
+    
     enum DetailTitle: String {
         case humidity = "습도"
         case cloud = "구름"

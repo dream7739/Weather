@@ -8,8 +8,8 @@
 import Foundation
 
 extension Date {
-    var toTimeInterval: Int {
-        return Int(self.timeIntervalSince1970)
+    var toTimeInterval: TimeInterval {
+        return self.timeIntervalSince1970
     }
     
     var dayAfterTomorrow: Date {
@@ -24,18 +24,18 @@ extension Date {
         var weekDayList: [Date] = []
         let today = Calendar.current.startOfDay(for: self)
         weekDayList.append(today)
-        for i in 1...5 {
+        for i in 1...4 {
             let weekDay = Calendar.current.date(byAdding: .day, value: i, to: today) ?? Date()
             weekDayList.append(weekDay)
         }
         return weekDayList
     }
     
-    func getMostRecentWeather(timeIntervals: [Int]) -> Int {
+    func getMostRecentWeather(timeIntervals: [TimeInterval]) -> TimeInterval {
         let currentTime = self.toTimeInterval
-        let recentTime =  timeIntervals.min {
+        let recentTime = timeIntervals.min {
             abs($0 - currentTime) < abs($1 - currentTime)
         } ?? currentTime
-        return recentTime
+        return TimeInterval(recentTime)
     }
 }

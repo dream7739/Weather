@@ -10,11 +10,11 @@ import Foundation
 struct WeatherResult: Decodable {
     let cod: String
     let list: [WeatherInfo]
-    let city: CityInfo
+    let city: City
 }
 
 struct WeatherInfo: Decodable {
-    let dt: Int
+    let dt: TimeInterval
     let main: MainInfo
     let weather: [Weather]
     let clouds: Cloud
@@ -46,18 +46,12 @@ struct Wind: Decodable {
     let gust: Double
 }
 
-struct CityInfo: Decodable {
-    let id: Int
-    let name: String
-    let coord: Coord
-}
-
 struct City: Decodable {
     let id: Int
     let name: String
-    let state: String
     let country: String
     let coord: Coord
+    let timezone: TimeInterval
 }
 
 struct Coord: Decodable {

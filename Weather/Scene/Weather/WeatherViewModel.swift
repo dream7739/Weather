@@ -15,6 +15,7 @@ final class WeatherViewModel: BaseViewModel {
     }
     
     struct Output {
+        let setBackgroundImage: PublishRelay<Int>
         let sections: BehaviorRelay<[WeatherSectionModel]>
     }
     
@@ -22,6 +23,7 @@ final class WeatherViewModel: BaseViewModel {
     
     func transform(input: Input) -> Output {
         let sections = BehaviorRelay<[WeatherSectionModel]>(value: [])
+        let setBackgroundImage = PublishRelay<Int>()
         
         input.callWeatherRequest
             .flatMap { coord in
@@ -30,12 +32,21 @@ final class WeatherViewModel: BaseViewModel {
             .subscribe(with: self) { owner, result in
                 switch result {
                 case .success(let value):
-                    let mainWeatherSection = owner.createMainWeather(result: value)
-                    let hourWeatherSection = owner.createHourWeather(result: value)
-                    let weekWeatherSection = owner.createWeekWeather(result: value)
-                    let mapWeatherSection = owner.createMapWeather(result: value)
-                    let detailWeatherSection = owner.createDetailWeather(result: value)
+                    let city = value.city.name
+                    let coord = value.city.coord
+                    let mainWeather = owner.getMainWeather(result: value)
+                    let hourWeather = owner.getHourWeather(result: value)
+                    let weekWeather = owner.getWeekWeather(result: value)
                     
+                    let weatherCondition = mainWeather?.weather.first?.id ?? 0
+                    setBackgroundImage.accept(weatherCondition)
+                    
+                    let mainWeatherSection = owner.createMainWeather(city, mainWeather)
+                    let hourWeatherSection = owner.createHourWeather(hourWeather)
+                    let weekWeatherSection = owner.createWeekWeather(weekWeather)
+                    let mapWeatherSection = owner.createMapWeather(coord)
+                    let detailWeatherSection = owner.createDetailWeather(value)
+
                     let sectionModel = [
                         mainWeatherSection,
                         hourWeatherSection,
@@ -50,26 +61,60 @@ final class WeatherViewModel: BaseViewModel {
             }
             .disposed(by: disposeBag)
         
-        return Output(sections: sections)
+        return Output(
+            setBackgroundImage: setBackgroundImage,
+            sections: sections
+        )
     }
 }
 
 extension WeatherViewModel {
-    // 메인 날씨
-    private func createMainWeather(result: WeatherResult) -> WeatherSectionModel {
+    private func getMainWeather(result: WeatherResult) -> WeatherInfo? {
         let timeList = result.list.map { $0.dt }
         let recentTime = Date().getMostRecentWeather(timeIntervals: timeList)
         let recentWeather = result.list.filter { $0.dt == recentTime }.first
+        return recentWeather
+    }
+    
+    private func getHourWeather(result: WeatherResult) -> [WeatherInfo] {
+        let date = Date()
+        let dayAfterTomorrow = date.dayAfterTomorrow.toTimeInterval
+        let hourWeatherList = result.list.filter {
+            $0.dt < dayAfterTomorrow
+        }
+        return hourWeatherList
+    }
+    
+    private func getWeekWeather(result: WeatherResult) -> [[WeatherInfo]] {
+        let date = Date()
+        let weekDayList = date.weekDays
+        var weekWeatherList: [[WeatherInfo]] = Array(repeating: [], count: 5)
+        
+        for i in 0..<weekDayList.count {
+            let startDate = weekDayList[i]
+            let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate) ?? Date()
+            let dayWeatherList = result.list.filter {
+                $0.dt >= startDate.toTimeInterval &&
+                $0.dt < endDate.toTimeInterval
+            }
+            weekWeatherList[i] = dayWeatherList
+        }
+        return weekWeatherList
+    }
+    
+    
+}
 
-        guard let recentWeather else {
+extension WeatherViewModel {
+    private func createMainWeather(_ city: String, _ weatherInfo: WeatherInfo?) -> WeatherSectionModel {
+        guard let weatherInfo else {
             return WeatherSectionModel.map(items: [])
         }
         
-        let city = result.city.name
-        let temp = recentWeather.main.temp.toString + "°"
-        let description = recentWeather.weather.first?.main ?? ""
-        let highTemp = recentWeather.main.temp_max.toString + "°"
-        let lowTemp = recentWeather.main.temp_min.toString + "°"
+        let temp = weatherInfo.main.temp.toString + "°"
+        let description = weatherInfo.weather.first?.main ?? ""
+        let highTemp = weatherInfo.main.temp_max.toString + "°"
+        let lowTemp = weatherInfo.main.temp_min.toString + "°"
         
         let mainWeather = MainWeather(
             city: city,
@@ -79,68 +124,54 @@ extension WeatherViewModel {
             lowTemp: lowTemp
         )
         
-        let mainItem = SectionItem.main(
-            data: mainWeather
-        )
-        
+        let mainItem = SectionItem.main(data: mainWeather)
         let mainSection = WeatherSectionModel.main(items: [mainItem])
         return mainSection
     }
     
-    // 3시간 간격의 일기예보
-    private func createHourWeather(result: WeatherResult) -> WeatherSectionModel {
-        let date = Date()
-        let current = date.toTimeInterval
-        let dayAfterTomorrow = date.dayAfterTomorrow.toTimeInterval
-        let hourWeatherList = result.list.filter {
-            $0.dt >= current && $0.dt < dayAfterTomorrow
-        }
-        
-        let hourItemList = hourWeatherList.map {
-            let date = Date(timeIntervalSinceReferenceDate: TimeInterval($0.dt))
-            let hour = date.toApmFormat
-            let weather = Constant.WeatherIcon($0.weather.first?.icon ?? "01d").rawValue
-            let temp = $0.main.temp.toString + "°"
+    private func createHourWeather(_ hourWeather: [WeatherInfo]) -> WeatherSectionModel {
+        let hourWeatherList = hourWeather.enumerated().map { index, value in
+            let date = Date(timeIntervalSince1970: TimeInterval(value.dt))
+            let hour = index == 0 ? "오늘" : date.toApmFormat
+            let weather = Constant.WeatherIcon(value.weather.first?.icon ?? "").rawValue
+            let temp = value.main.temp.toString + "°"
             
-            return SectionItem.hour(
-                data: HourWeather(
-                    hour: hour,
-                    weather: weather,
-                    temp: temp
-                )
+            return HourWeather(
+                hour: hour,
+                weather: weather,
+                temp: temp
             )
         }
         
+        let hourItemList = hourWeatherList.map { SectionItem.hour(data: $0) }
         let hourSection = WeatherSectionModel.hour(items: hourItemList)
         return hourSection
     }
     
-    // 5일간의 일기예보
-    private func createWeekWeather(result: WeatherResult) -> WeatherSectionModel {
+    private func createWeekWeather(_ weekWeather: [[WeatherInfo]]) -> WeatherSectionModel {
         let date = Date()
         let weekDayList = date.weekDays
         var weekWeatherList: [WeekWeather] = []
-
-        for i in 0..<weekDayList.count - 1 {
-            let dayWeatherList = result.list.filter {
-                $0.dt >= weekDayList[i].toTimeInterval &&
-                $0.dt < weekDayList[i+1].toTimeInterval
-            }
-            
+        
+        for i in 0..<weekWeather.count {
             let weekDate = weekDayList[i]
+            let dayWeather = weekWeather[i]
+            
             var weekDay: String
             if Calendar.current.startOfDay(for: date) == weekDate {
                 weekDay = "오늘"
             } else {
                 weekDay = DateFormatterManager.dayFormatter.string(from: weekDayList[i])
             }
-            let weather = Constant.WeatherIcon(dayWeatherList.first?.weather.first?.icon ?? "01d").rawValue
-            let lowTemp = dayWeatherList
+            
+            let weather = Constant.WeatherIcon(dayWeather.first?.weather.first?.icon ?? "01d").rawValue
+            
+            let lowTemp = dayWeather
                 .map { $0.main.temp_min }
-                .min { $0 < $1 } ?? 0
-            let highTemp = dayWeatherList
+                .min() ?? 0
+            let highTemp = dayWeather
                 .map { $0.main.temp_max }
-                .max { $0 > $1 } ?? 0
+                .max() ?? 0
             
             let weekWeather = WeekWeather(
                 weekDay: weekDay,
@@ -157,17 +188,14 @@ extension WeatherViewModel {
         return weekSection
     }
     
-    // 선택 도시 기반 지도
-    private func createMapWeather(result: WeatherResult) -> WeatherSectionModel {
-        let coord = result.city.coord
+    private func createMapWeather(_ coord: Coord) -> WeatherSectionModel {
         let mapWeather = MapWeather(lat: coord.lat, lon: coord.lon)
         let mapItem = SectionItem.map(data: mapWeather)
         let mapSection = WeatherSectionModel.map(items: [mapItem])
         return mapSection
     }
     
-    // 습도, 구름, 바람속도, 기압 등 상세한 일기예보 * 평균값
-    private func createDetailWeather(result: WeatherResult) -> WeatherSectionModel {
+    private func createDetailWeather(_ result: WeatherResult) -> WeatherSectionModel {
         let weatherList = result.list
         let listCount = Double(weatherList.count)
         

@@ -20,6 +20,8 @@ final class WeatherViewController: BaseViewController {
         frame: .zero,
         collectionViewLayout: createLayout()
     )
+    private let backgroundImageView = UIImageView()
+        
     private let viewModel = WeatherViewModel()
     private let disposeBag = DisposeBag()
     
@@ -42,7 +44,9 @@ final class WeatherViewController: BaseViewController {
     }
     
     override func configureUI() {
-        weatherCollectionView.backgroundColor = .red
+        backgroundImageView.contentMode = .scaleAspectFill
+        backgroundImageView.frame = weatherCollectionView.bounds
+        weatherCollectionView.backgroundView = backgroundImageView
     }
     
     func bind() {
@@ -65,7 +69,7 @@ final class WeatherViewController: BaseViewController {
                 owner.searchController.showsSearchResultsController = true
             }
             .disposed(by: disposeBag)
-
+        
         searchController.searchBar.rx
             .text
             .orEmpty
@@ -77,17 +81,23 @@ final class WeatherViewController: BaseViewController {
         
         cityViewController.didSelectCityUpdator
             .bind(with: self) { owner, coord in
-                owner.searchController.isActive = false 
+                owner.searchController.isActive = false
                 input.callWeatherRequest.accept(coord)
                 print(coord)
             }
+            .disposed(by: disposeBag)
+        
+        output.setBackgroundImage
+            .map { Constant.WeatherBackgroundImage(conditionCode: $0) }
+            .map { UIImage(named: $0.rawValue) }
+            .bind(to: backgroundImageView.rx.image)
             .disposed(by: disposeBag)
         
         output.sections
             .bind(to: weatherCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
-       
+        
         
     }
     

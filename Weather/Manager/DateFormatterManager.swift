@@ -16,12 +16,14 @@ enum DateFormatterManager {
     static let apmFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = DateFormat.apm.rawValue
+        formatter.locale = Locale(identifier: "ko_KR")
         return formatter
     }()
     
     static let dayFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = DateFormat.day.rawValue
+        formatter.locale = Locale(identifier: "ko_KR")
         return formatter
     }()
 }
