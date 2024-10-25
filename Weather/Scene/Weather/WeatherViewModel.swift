@@ -101,8 +101,6 @@ extension WeatherViewModel {
         }
         return weekWeatherList
     }
-    
-    
 }
 
 extension WeatherViewModel {

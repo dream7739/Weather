@@ -52,6 +52,7 @@
 		88C0E38B2CCB8D9D0016397C /* SearchSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C0E38A2CCB8D9D0016397C /* SearchSectionModel.swift */; };
 		88C0E38D2CCB8F770016397C /* CitySearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C0E38C2CCB8F770016397C /* CitySearchCell.swift */; };
 		88C0E38F2CCBB6E10016397C /* SeperatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C0E38E2CCBB6E10016397C /* SeperatorView.swift */; };
+		88C0E3912CCC03A70016397C /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C0E3902CCC03A70016397C /* UILabel+.swift */; };
 		88D1101D2CCA7E7A00DFC703 /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D1101C2CCA7E7A00DFC703 /* Double+.swift */; };
 /* End PBXBuildFile section */
 
@@ -98,6 +99,7 @@
 		88C0E38A2CCB8D9D0016397C /* SearchSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSectionModel.swift; sourceTree = "<group>"; };
 		88C0E38C2CCB8F770016397C /* CitySearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitySearchCell.swift; sourceTree = "<group>"; };
 		88C0E38E2CCBB6E10016397C /* SeperatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeperatorView.swift; sourceTree = "<group>"; };
+		88C0E3902CCC03A70016397C /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
 		88D1101C2CCA7E7A00DFC703 /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -193,6 +195,7 @@
 			children = (
 				884021B02CCA23BC00155DE8 /* Date+.swift */,
 				88D1101C2CCA7E7A00DFC703 /* Double+.swift */,
+				88C0E3902CCC03A70016397C /* UILabel+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -427,6 +430,7 @@
 				88A398EA2CC91B5B00EFED0D /* BaseViewController.swift in Sources */,
 				883ECBDB2CC954B90093D930 /* WeekWeatherCell.swift in Sources */,
 				88C0E3802CCB6C0D0016397C /* JsonParseManager.swift in Sources */,
+				88C0E3912CCC03A70016397C /* UILabel+.swift in Sources */,
 				884021A62CC9E29600155DE8 /* WeatherHeaderView.swift in Sources */,
 				88A398CD2CC8EC8C00EFED0D /* WeatherResult.swift in Sources */,
 				88A398DD2CC90F5D00EFED0D /* WeatherViewModel.swift in Sources */,
