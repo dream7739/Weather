@@ -11,10 +11,12 @@ import SnapKit
 final class CitySearchCell: BaseCollectionViewCell {
     private let cityLabel = UILabel()
     private let countryLabel = UILabel()
+    private let seperatorView = SeperatorView()
     
     override func configureHierarchy() {
         contentView.addSubview(cityLabel)
         contentView.addSubview(countryLabel)
+        contentView.addSubview(seperatorView)
     }
     
     override func configureLayout() {
@@ -27,12 +29,17 @@ final class CitySearchCell: BaseCollectionViewCell {
             make.top.equalTo(cityLabel.snp.bottom).offset(4)
             make.horizontalEdges.equalTo(cityLabel)
         }
+        
+        seperatorView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
     }
     
     override func configureUI() {
-        cityLabel.font = .boldSystemFont(ofSize: 13)
+        cityLabel.font = .boldSystemFont(ofSize: 14)
         cityLabel.textColor = .white
-        countryLabel.font = .systemFont(ofSize: 11)
+        countryLabel.font = .systemFont(ofSize: 12)
         countryLabel.textColor = .white
     }
     

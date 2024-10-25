@@ -51,6 +51,7 @@
 		88C0E3892CCB85230016397C /* RecentSearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C0E3882CCB85230016397C /* RecentSearchCell.swift */; };
 		88C0E38B2CCB8D9D0016397C /* SearchSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C0E38A2CCB8D9D0016397C /* SearchSectionModel.swift */; };
 		88C0E38D2CCB8F770016397C /* CitySearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C0E38C2CCB8F770016397C /* CitySearchCell.swift */; };
+		88C0E38F2CCBB6E10016397C /* SeperatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C0E38E2CCBB6E10016397C /* SeperatorView.swift */; };
 		88D1101D2CCA7E7A00DFC703 /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D1101C2CCA7E7A00DFC703 /* Double+.swift */; };
 /* End PBXBuildFile section */
 
@@ -96,6 +97,7 @@
 		88C0E3882CCB85230016397C /* RecentSearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchCell.swift; sourceTree = "<group>"; };
 		88C0E38A2CCB8D9D0016397C /* SearchSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSectionModel.swift; sourceTree = "<group>"; };
 		88C0E38C2CCB8F770016397C /* CitySearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitySearchCell.swift; sourceTree = "<group>"; };
+		88C0E38E2CCBB6E10016397C /* SeperatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeperatorView.swift; sourceTree = "<group>"; };
 		88D1101C2CCA7E7A00DFC703 /* Double+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -209,6 +211,7 @@
 			children = (
 				884021A52CC9E29600155DE8 /* WeatherHeaderView.swift */,
 				889EEAE72CCA594900688A65 /* WeatherBackgroundView.swift */,
+				88C0E38E2CCBB6E10016397C /* SeperatorView.swift */,
 			);
 			path = CustomView;
 			sourceTree = "<group>";
@@ -429,6 +432,7 @@
 				88A398DD2CC90F5D00EFED0D /* WeatherViewModel.swift in Sources */,
 				884021B42CCA27B600155DE8 /* DateFormatterManager.swift in Sources */,
 				88A398E82CC919B500EFED0D /* DetailWeather.swift in Sources */,
+				88C0E38F2CCBB6E10016397C /* SeperatorView.swift in Sources */,
 				884021A82CC9EAE900155DE8 /* WeatherSectionModel.swift in Sources */,
 				88A398BA2CC8E58200EFED0D /* APIKey.swift in Sources */,
 				88A3989A2CC8B25500EFED0D /* SceneDelegate.swift in Sources */,
