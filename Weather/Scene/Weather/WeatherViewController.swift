@@ -108,7 +108,7 @@ extension WeatherViewController {
 extension WeatherViewController {
     private func createLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, _ in
-            guard let section = Section(rawValue: sectionIndex) else { return nil }
+            guard let section = WeatherSection(rawValue: sectionIndex) else { return nil }
             switch section {
             case .main:
                 return self?.createMainSection()

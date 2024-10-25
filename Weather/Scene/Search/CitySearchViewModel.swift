@@ -15,26 +15,37 @@ final class CitySearchViewModel: BaseViewModel {
     }
     
     struct Output {
+        let sections: BehaviorRelay<[SearchSectionModel]>
     }
     
     var disposeBag = DisposeBag()
     
     func transform(input: Input) -> Output {
+        let sections = BehaviorRelay<[SearchSectionModel]>(value: [])
+        
         input.jsonParseRequest
             .flatMap { fileName in
                 JsonParseManager.shared.parseJSONFromFile(fileName: fileName)
                     .catch { error in
-                        print(error)
                         return Single.never()
                     }
             }
             .subscribe(with: self) { owner, cityList in
-                print(cityList.prefix(10))
+                let recentItem = Set<String>().map { SearchSectionItem.recent(data: $0) }
+                let cityItem = cityList.map { SearchSectionItem.city(data: $0) }
+                let recentSection = SearchSectionModel.recent(items: recentItem)
+                let citySection = SearchSectionModel.city(items: cityItem)
+                let section = [recentSection, citySection]
+                sections.accept(section)
             }
             .disposed(by: disposeBag)
-            
         
-       return Output()
+        
+        return Output(sections: sections)
     }
+    
+}
+
+extension CitySearchViewModel {
     
 }

@@ -7,7 +7,7 @@
 
 import RxDataSources
 
-enum Section: Int, CaseIterable {
+enum WeatherSection: Int, CaseIterable {
     case main
     case hour
     case week
@@ -31,7 +31,7 @@ enum WeatherSectionModel: SectionModelType {
         case .hour(let items):
             return items.map { $0 }
         case .week(items: let items):
-            return items.map { $0}
+            return items.map { $0 }
         case .map(let items):
             return items.map { $0 }
         case .detail(let items):
