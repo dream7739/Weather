@@ -25,8 +25,7 @@ final class CitySearchCell: BaseCollectionViewCell {
         
         countryLabel.snp.makeConstraints { make in
             make.top.equalTo(cityLabel.snp.bottom).offset(4)
-            make.leading.equalTo(cityLabel)
-            make.trailing.equalTo(contentView.safeAreaLayoutGuide)
+            make.horizontalEdges.equalTo(cityLabel)
         }
     }
     

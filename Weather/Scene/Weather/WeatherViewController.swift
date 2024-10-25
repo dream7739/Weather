@@ -58,16 +58,11 @@ final class WeatherViewController: BaseViewController {
         let output = viewModel.transform(input: input)
         let dataSource = configureDataSource()
         
-        
-        output.sections
-            .bind(to: weatherCollectionView.rx.items(dataSource: dataSource))
-            .disposed(by: disposeBag)
-        
         searchController.rx.present
             .bind(with: self) { owner, _ in
                 guard let resultController = owner.searchController.searchResultsController as? CitySearchViewController else { return }
-                owner.searchController.showsSearchResultsController = true
                 resultController.searchResultUpdator.accept("")
+                owner.searchController.showsSearchResultsController = true
             }
             .disposed(by: disposeBag)
 
@@ -79,6 +74,20 @@ final class WeatherViewController: BaseViewController {
                 resultController.searchResultUpdator.accept(searchText)
             }
             .disposed(by: disposeBag)
+        
+        cityViewController.didSelectCityUpdator
+            .bind(with: self) { owner, coord in
+                owner.searchController.isActive = false 
+                input.callWeatherRequest.accept(coord)
+                print(coord)
+            }
+            .disposed(by: disposeBag)
+        
+        output.sections
+            .bind(to: weatherCollectionView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+        
+       
         
     }
     
@@ -187,14 +196,14 @@ extension WeatherViewController {
     private func createMainSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .absolute(200)
+            heightDimension: .estimated(200)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize,
                                                        subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(
-            top: 44,
+            top: 30,
             leading: 0,
             bottom: 0,
             trailing: 0

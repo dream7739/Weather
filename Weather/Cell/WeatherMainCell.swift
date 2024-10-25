@@ -23,23 +23,25 @@ final class WeatherMainCell: BaseCollectionViewCell {
     
     override func configureLayout() {
         cityLabel.snp.makeConstraints { make in
-            make.top.equalTo(contentView).offset(8)
-            make.centerX.equalTo(contentView)
+            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(8)
+            make.centerX.equalTo(contentView.safeAreaLayoutGuide)
+            make.horizontalEdges.equalTo(contentView.safeAreaLayoutGuide).inset(15)
         }
         
         temperatureLabel.snp.makeConstraints { make in
             make.top.equalTo(cityLabel.snp.bottom).offset(8)
-            make.centerX.equalTo(contentView)
+            make.centerX.equalTo(contentView.safeAreaLayoutGuide)
         }
         
         descriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(temperatureLabel.snp.bottom).offset(8)
-            make.centerX.equalTo(contentView)
+            make.centerX.equalTo(contentView.safeAreaLayoutGuide)
         }
         
         highLowLabel.snp.makeConstraints { make in
             make.top.equalTo(descriptionLabel.snp.bottom).offset(8)
-            make.centerX.equalTo(contentView)
+            make.centerX.equalTo(contentView.safeAreaLayoutGuide)
+            make.bottom.equalTo(contentView.safeAreaLayoutGuide).inset(10)
         }
     }
     
@@ -47,6 +49,7 @@ final class WeatherMainCell: BaseCollectionViewCell {
         cityLabel.font = .systemFont(ofSize: 34, weight: .medium)
         cityLabel.textColor = .white
         cityLabel.textAlignment = .center
+        cityLabel.numberOfLines = 2
         
         temperatureLabel.font = .systemFont(ofSize: 60, weight: .thin)
         temperatureLabel.textColor = .white

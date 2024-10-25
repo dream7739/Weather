@@ -16,7 +16,9 @@ final class CitySearchViewController: BaseViewController {
         frame: .zero,
         collectionViewLayout: createLayout()
     )
+    
     let searchResultUpdator = PublishRelay<String>()
+    let didSelectCityUpdator = PublishRelay<Coord>()
     private let viewModel = CitySearchViewModel()
     private let disposeBag = DisposeBag()
 
@@ -37,6 +39,7 @@ final class CitySearchViewController: BaseViewController {
     }
     
     override func configureUI() {
+        cityCollectionView.keyboardDismissMode = .onDrag
         cityCollectionView.backgroundColor = .red
     }
     
@@ -50,6 +53,18 @@ final class CitySearchViewController: BaseViewController {
         
         let output = viewModel.transform(input: input)
         let dataSource = configureDataSource()
+        
+        cityCollectionView.rx
+            .modelSelected(SearchSectionItem.self)
+            .bind(with: self) { owner, sectionItem in
+                switch sectionItem {
+                case .recent(let data):
+                    print(data)
+                case .city(let data):
+                    owner.didSelectCityUpdator.accept(data.coord)
+                }
+            }
+            .disposed(by: disposeBag)
         
         output.sections
             .bind(to: cityCollectionView.rx.items(dataSource: dataSource))
@@ -89,7 +104,6 @@ extension CitySearchViewController {
     }
     
     private func configureDataSource() -> RxCollectionViewSectionedReloadDataSource<SearchSectionModel> {
-        print(#function)
         return RxCollectionViewSectionedReloadDataSource(configureCell:  { dataSource, collectionView, indexPath, _ in
             switch dataSource[indexPath] {
             case .recent(let data):
