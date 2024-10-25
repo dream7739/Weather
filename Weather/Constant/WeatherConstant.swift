@@ -8,6 +8,8 @@
 import Foundation
 
 enum Constant {
+    static let jsonFileName = "reduced_citylist"
+    
     enum WeatherIcon: String {
         case clearSky = "01d"
         case fewClouds = "02d"

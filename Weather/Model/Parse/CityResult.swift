@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+struct CityResult: Decodable {
+    let id: Int
+    let name: String
+    let country: String
+    let coord: Coord
+}
