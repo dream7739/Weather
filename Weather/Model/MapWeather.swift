@@ -7,8 +7,7 @@
 
 import Foundation
 
-struct MapWeather: Hashable, Identifiable {
-    let id = UUID()
+struct MapWeather {
     let lat: Double
     let lon: Double
 }
