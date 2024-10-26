@@ -15,7 +15,7 @@ final class WeatherViewModel: BaseViewModel {
     }
     
     struct Output {
-        let presentError: PublishRelay<String>
+        let presentError: BehaviorRelay<String>
         let setBackgroundImage: PublishRelay<Int>
         let sections: BehaviorRelay<[WeatherSectionModel]>
     }
@@ -23,27 +23,26 @@ final class WeatherViewModel: BaseViewModel {
     var disposeBag = DisposeBag()
     
     func transform(input: Input) -> Output {
-        let presentError = PublishRelay<String>()
+        let presentError = BehaviorRelay<String>(value: "")
         let sections = BehaviorRelay<[WeatherSectionModel]>(value: [])
         let setBackgroundImage = PublishRelay<Int>()
         
         input.callWeatherRequest
             .map {
                 let request = WeatherRequest(lat: $0.lat, lon: $0.lon)
-
-                do {
-                    let urlRequest = try WeatherRouter.forecast(request: request).asURLRequest()
-                    return urlRequest
-                } catch {
-                    presentError.accept(ErrorMessage.message)
-                    throw error
-                }
+                let urlRequest = try? WeatherRouter.forecast(request: request).asURLRequest()
+                return urlRequest
             }
             .flatMap { urlRequest in
-                NetworkManager.shared.callRequest(
-                    request: urlRequest,
-                    response: WeatherResult.self
-                )
+                if let urlRequest {
+                    return NetworkManager.shared.callRequest(
+                        request: urlRequest,
+                        response: WeatherResult.self
+                    )
+                } else {
+                    presentError.accept(ErrorMessage.network)
+                    return Single<Result<WeatherResult, Error>>.never()
+                }
             }
             .subscribe(with: self) { owner, result in
                 switch result {
@@ -62,7 +61,7 @@ final class WeatherViewModel: BaseViewModel {
                     let weekWeatherSection = owner.createWeekWeather(weekWeather)
                     let mapWeatherSection = owner.createMapWeather(coord)
                     let detailWeatherSection = owner.createDetailWeather(value)
-
+                    
                     let sectionModel = [
                         mainWeatherSection,
                         hourWeatherSection,
@@ -70,9 +69,10 @@ final class WeatherViewModel: BaseViewModel {
                         mapWeatherSection,
                         detailWeatherSection
                     ]
+                    
                     sections.accept(sectionModel)
-                case .failure(let error):
-                    print(error)
+                case .failure:
+                    presentError.accept(ErrorMessage.network)
                 }
             }
             .disposed(by: disposeBag)
@@ -299,7 +299,7 @@ extension WeatherViewModel {
                 pressureItem
             ]
         )
-    
+        
         return detailSection
     }
 }

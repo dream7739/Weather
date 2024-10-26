@@ -8,5 +8,5 @@
 import Foundation
 
 enum ErrorMessage {
-    static let message = "오류가 발생하였습니다"
+    static let network = "오류가 발생하였습니다"
 }
