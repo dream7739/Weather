@@ -21,7 +21,7 @@ final class WeatherViewController: BaseViewController {
         collectionViewLayout: createLayout()
     )
     private let backgroundImageView = UIImageView()
-        
+    
     private let viewModel = WeatherViewModel()
     private let disposeBag = DisposeBag()
     
@@ -196,11 +196,11 @@ extension WeatherViewController {
                 return UICollectionReusableView()
             }
             
-                header.setTitle("강수량")
+            header.setTitle("강수량")
             if indexPath.section == 2 {
                 header.hideSeperator()
             }
-                return header
+            return header
         }
     }
     
@@ -223,22 +223,28 @@ extension WeatherViewController {
     }
     
     private func createHourlySection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(58),
-                                              heightDimension: .absolute(100))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.15),
+                                              heightDimension: .absolute(104))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .absolute(100))
+                                               heightDimension: .absolute(104))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.contentInsets = NSDirectionalEdgeInsets(
+            top: 4,
+            leading: 20,
+            bottom: 0,
+            trailing: 0
+        )
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-        section.contentInsets = NSDirectionalEdgeInsets(
+        let header = createHeader()
+        header.contentInsets = NSDirectionalEdgeInsets(
             top: 0,
             leading: 30,
             bottom: 0,
-            trailing: 30
+            trailing: 40
         )
-        let header = createHeader()
         section.boundarySupplementaryItems = [header]
         
         let backgroundItem = NSCollectionLayoutDecorationItem.background(elementKind: WeatherBackgroundView.reuseIdentifier)

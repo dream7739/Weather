@@ -130,7 +130,7 @@ extension WeatherViewModel {
     private func createHourWeather(_ hourWeather: [WeatherInfo]) -> WeatherSectionModel {
         let hourWeatherList = hourWeather.enumerated().map { index, value in
             let date = Date(timeIntervalSince1970: TimeInterval(value.dt))
-            let hour = index == 0 ? "오늘" : date.toApmFormat
+            let hour = index == 0 ? "지금" : date.toApmFormat
             let weather = Constant.WeatherIcon(value.weather.first?.icon ?? "").rawValue
             let temp = value.main.temp.toString + "°"
             
