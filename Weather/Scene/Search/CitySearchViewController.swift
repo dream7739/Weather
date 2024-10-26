@@ -72,7 +72,7 @@ final class CitySearchViewController: BaseViewController {
             .bind(with: self) { owner, sectionItem in
                 switch sectionItem {
                 case .recent(let data):
-                    print(data)
+                    owner.didSelectCityUpdator.accept(data.coord)
                 case .city(let data):
                     input.saveRecentSearch.accept(data)
                     owner.didSelectCityUpdator.accept(data.coord)
@@ -128,7 +128,7 @@ extension CitySearchViewController {
             switch dataSource[indexPath] {
             case .recent(let data):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecentSearchCell.reuseIdentifier, for: indexPath) as? RecentSearchCell else { return UICollectionViewCell() }
-                cell.configureData(data)
+                cell.configureData(data.name)
                 return cell
             case .city(let data):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CitySearchCell.reuseIdentifier, for: indexPath) as? CitySearchCell else { return UICollectionViewCell() }

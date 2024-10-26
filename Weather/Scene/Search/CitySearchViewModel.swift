@@ -77,7 +77,7 @@ final class CitySearchViewModel: BaseViewModel {
 extension CitySearchViewModel {
     private func createRecentSection() -> SearchSectionModel {
         let recentList = UserManager.recentList.sorted { $0.value.saveDate > $1.value.saveDate }
-        let recentItem = recentList.map { SearchSectionItem.recent(data: $0.value.name) }
+        let recentItem = recentList.map { SearchSectionItem.recent(data: $0.value) }
         let recentSection = SearchSectionModel.recent(items: recentItem)
         return recentSection
     }
@@ -87,7 +87,8 @@ extension CitySearchViewModel {
         if searchText.isEmpty {
             filteredCityList = cityList
         } else {
-            filteredCityList = cityList.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+            filteredCityList = cityList.filter { $0.name.localizedCaseInsensitiveContains(searchText)
+            }
         }
         let cityItem = filteredCityList.map { SearchSectionItem.city(data: $0) }
         let citySection = SearchSectionModel.city(items: cityItem)

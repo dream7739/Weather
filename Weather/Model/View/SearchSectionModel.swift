@@ -13,7 +13,7 @@ enum SearchSection: Int, CaseIterable {
 }
 
 enum SearchSectionItem {
-    case recent(data: String)
+    case recent(data: RecentSearch)
     case city(data: CityResult)
 }
 
