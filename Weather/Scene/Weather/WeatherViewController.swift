@@ -10,6 +10,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 import SnapKit
+import Toast
 
 final class WeatherViewController: BaseViewController {
     private let cityViewController = CitySearchViewController()
@@ -86,6 +87,12 @@ final class WeatherViewController: BaseViewController {
             .bind(with: self) { owner, coord in
                 owner.searchController.isActive = false
                 input.callWeatherRequest.accept(coord)
+            }
+            .disposed(by: disposeBag)
+        
+        output.presentError
+            .bind(with: self) { owner, message in
+                owner.view.makeToast(message)
             }
             .disposed(by: disposeBag)
         

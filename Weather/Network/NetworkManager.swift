@@ -13,12 +13,14 @@ final class NetworkManager {
     static let shared = NetworkManager()
     private init() { }
     
-    func callRequest(_ coord: Coord) -> Single<Result<WeatherResult, Error>> {
-        let url = APIURL.forecast + "?lat=\(coord.lat)&lon=\(coord.lon)&units=metric&lang=kr&appid=\(APIKey.weather)"
-        let result = Single<Result<WeatherResult, Error>>.create { observer in
-            AF.request(url)
+    func callRequest<T: Decodable>(
+        request: URLRequest,
+        response: T.Type
+    ) -> Single<Result<T, Error>> {
+        let result = Single<Result<T, Error>>.create { observer in
+            AF.request(request)
                 .validate(statusCode: 200...400)
-                .responseDecodable(of: WeatherResult.self) { response in
+                .responseDecodable(of: T.self) { response in
                     switch response.result {
                     case .success(let value):
                         observer(.success(.success(value)))

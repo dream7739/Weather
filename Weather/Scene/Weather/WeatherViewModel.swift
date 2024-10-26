@@ -15,6 +15,7 @@ final class WeatherViewModel: BaseViewModel {
     }
     
     struct Output {
+        let presentError: PublishRelay<String>
         let setBackgroundImage: PublishRelay<Int>
         let sections: BehaviorRelay<[WeatherSectionModel]>
     }
@@ -22,12 +23,27 @@ final class WeatherViewModel: BaseViewModel {
     var disposeBag = DisposeBag()
     
     func transform(input: Input) -> Output {
+        let presentError = PublishRelay<String>()
         let sections = BehaviorRelay<[WeatherSectionModel]>(value: [])
         let setBackgroundImage = PublishRelay<Int>()
         
         input.callWeatherRequest
-            .flatMap { coord in
-                NetworkManager.shared.callRequest(coord)
+            .map {
+                let request = WeatherRequest(lat: $0.lat, lon: $0.lon)
+
+                do {
+                    let urlRequest = try WeatherRouter.forecast(request: request).asURLRequest()
+                    return urlRequest
+                } catch {
+                    presentError.accept(ErrorMessage.message)
+                    throw error
+                }
+            }
+            .flatMap { urlRequest in
+                NetworkManager.shared.callRequest(
+                    request: urlRequest,
+                    response: WeatherResult.self
+                )
             }
             .subscribe(with: self) { owner, result in
                 switch result {
@@ -62,6 +78,7 @@ final class WeatherViewModel: BaseViewModel {
             .disposed(by: disposeBag)
         
         return Output(
+            presentError: presentError,
             setBackgroundImage: setBackgroundImage,
             sections: sections
         )
