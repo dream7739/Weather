@@ -58,16 +58,22 @@ final class CitySearchViewModel: BaseViewModel {
         
         input.saveRecentSearch
             .bind(with: self) { owner, item in
-                UserManager.recentList[item.id] = RecentSearch(
-                    name: item.name,
-                    coord: item.coord,
-                    saveDate: Date()
+                UserManager.shared.addRecent(
+                    RecentSearch(
+                        id: item.id,
+                        name: item.name,
+                        coord: item.coord,
+                        saveDate: Date())
                 )
+                
+                if UserManager.shared.isExceedCountLimit() {
+                    UserManager.shared.removeOldest()
+                }
             }
             .disposed(by: disposeBag)
         
         return Output(
-            presentError: presentError, 
+            presentError: presentError,
             sections: sections
         )
     }
@@ -76,7 +82,7 @@ final class CitySearchViewModel: BaseViewModel {
 
 extension CitySearchViewModel {
     private func createRecentSection() -> SearchSectionModel {
-        let recentList = UserManager.recentList.sorted { $0.value.saveDate > $1.value.saveDate }
+        let recentList = UserManager.shared.getRecentList()
         let recentItem = recentList.map { SearchSectionItem.recent(data: $0.value) }
         let recentSection = SearchSectionModel.recent(items: recentItem)
         return recentSection
@@ -87,8 +93,7 @@ extension CitySearchViewModel {
         if searchText.isEmpty {
             filteredCityList = cityList
         } else {
-            filteredCityList = cityList.filter { $0.name.localizedCaseInsensitiveContains(searchText)
-            }
+            filteredCityList = cityList.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
         }
         let cityItem = filteredCityList.map { SearchSectionItem.city(data: $0) }
         let citySection = SearchSectionModel.city(items: cityItem)

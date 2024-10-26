@@ -8,6 +8,7 @@
 import Foundation
 
 struct RecentSearch: Codable {
+    let id: Int
     let name: String
     let coord: Coord
     let saveDate: Date
@@ -40,13 +41,33 @@ struct UserDefaultsManager<T: Codable> {
 
 final class UserManager {
     private init() { }
+    static let shared = UserManager()
     
     @UserDefaultsManager(
         defaultValue: [:],
         key: "recentList",
         storage: .standard
     )
-    static var recentList: [Int: RecentSearch]
+    var recentList: [Int: RecentSearch]
     
+    func isExceedCountLimit() -> Bool {
+        return recentList.count > 20
+    }
+    
+    func addRecent(_ item: RecentSearch) {
+        recentList[item.id] = item
+    }
+    
+    func removeOldest() {
+        let oldest = recentList.min { $0.value.saveDate < $1.value.saveDate }
+        if let oldest {
+            recentList.removeValue(forKey: oldest.key)
+        }
+    }
+    
+    func getRecentList() -> Array<(key: Int, value: RecentSearch)> {
+        let list = recentList.sorted { $0.value.saveDate > $1.value.saveDate }
+        return list
+    }
     
 }
