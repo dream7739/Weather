@@ -10,15 +10,21 @@ import SnapKit
 
 final class WeatherHeaderView: BaseReusableView {
     private let titleLabel = UILabel()
+    let seperatorView = SeperatorView()
     
     override func configureHierarchy() {
         addSubview(titleLabel)
+        addSubview(seperatorView)
     }
     
     override func configureLayout() {
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(15)
             make.leading.equalToSuperview()
+        }
+        
+        seperatorView.snp.makeConstraints { make in
+            make.bottom.horizontalEdges.equalToSuperview()
         }
     }
     
@@ -29,5 +35,9 @@ final class WeatherHeaderView: BaseReusableView {
     
     func setTitle(_ title: String) {
         titleLabel.text = title
+    }
+    
+    func hideSeperator() {
+        seperatorView.isHidden = true
     }
 }

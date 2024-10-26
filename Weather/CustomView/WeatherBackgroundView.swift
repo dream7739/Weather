@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 final class WeatherBackgroundView: BaseReusableView {
-    private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+    private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
     
     override func configureHierarchy() {
         addSubview(blurEffectView)

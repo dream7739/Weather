@@ -47,6 +47,7 @@ final class WeatherViewController: BaseViewController {
         backgroundImageView.contentMode = .scaleAspectFill
         backgroundImageView.frame = weatherCollectionView.bounds
         weatherCollectionView.backgroundView = backgroundImageView
+        weatherCollectionView.showsVerticalScrollIndicator = false
     }
     
     func bind() {
@@ -96,9 +97,6 @@ final class WeatherViewController: BaseViewController {
         output.sections
             .bind(to: weatherCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
-        
-        
-        
     }
     
 }
@@ -194,12 +192,15 @@ extension WeatherViewController {
                 return cell
             }
         }) { dataSource, collectionView, kind, indexPath in
-            if let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeatherHeaderView.reuseIdentifier, for: indexPath) as? WeatherHeaderView {
-                header.setTitle("강수량")
-                return header
+            guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeatherHeaderView.reuseIdentifier, for: indexPath) as? WeatherHeaderView else {
+                return UICollectionReusableView()
             }
             
-            return UICollectionReusableView()
+                header.setTitle("강수량")
+            if indexPath.section == 2 {
+                header.hideSeperator()
+            }
+                return header
         }
     }
     
@@ -233,12 +234,13 @@ extension WeatherViewController {
         section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
         section.contentInsets = NSDirectionalEdgeInsets(
             top: 0,
-            leading: 20,
+            leading: 30,
             bottom: 0,
-            trailing: 20
+            trailing: 30
         )
         let header = createHeader()
         section.boundarySupplementaryItems = [header]
+        
         let backgroundItem = NSCollectionLayoutDecorationItem.background(elementKind: WeatherBackgroundView.reuseIdentifier)
         backgroundItem.contentInsets =  NSDirectionalEdgeInsets(
             top: 0,
@@ -256,19 +258,23 @@ extension WeatherViewController {
             heightDimension: .absolute(44)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: itemSize,
             subitems: [item]
         )
+        
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(
             top: 0,
-            leading: 20,
+            leading: 30,
             bottom: 0,
-            trailing: 20
+            trailing: 30
         )
+        
         let header = createHeader()
         section.boundarySupplementaryItems = [header]
+        
         let backgroundItem = NSCollectionLayoutDecorationItem.background(
             elementKind: WeatherBackgroundView.reuseIdentifier
         )
@@ -279,13 +285,14 @@ extension WeatherViewController {
             trailing: 15
         )
         section.decorationItems = [backgroundItem]
+        
         return section
     }
     
     private func createMapSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalWidth(0.9)
+            heightDimension: .fractionalWidth(1)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
@@ -303,7 +310,9 @@ extension WeatherViewController {
         let header = createHeader()
         section.boundarySupplementaryItems = [header]
         
-        let backgroundItem = NSCollectionLayoutDecorationItem.background(elementKind: WeatherBackgroundView.reuseIdentifier)
+        let backgroundItem = NSCollectionLayoutDecorationItem.background(
+            elementKind: WeatherBackgroundView.reuseIdentifier
+        )
         backgroundItem.contentInsets =  NSDirectionalEdgeInsets(
             top: 0,
             leading: 15,
@@ -311,6 +320,7 @@ extension WeatherViewController {
             trailing: 15
         )
         section.decorationItems = [backgroundItem]
+        
         return section
     }
     
@@ -320,6 +330,7 @@ extension WeatherViewController {
             heightDimension: .fractionalWidth(0.5)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .fractionalWidth(0.5)
@@ -329,6 +340,7 @@ extension WeatherViewController {
             subitems: [item]
         )
         group.interItemSpacing = .fixed(15)
+        
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 10
         section.contentInsets = NSDirectionalEdgeInsets(
@@ -337,6 +349,7 @@ extension WeatherViewController {
             bottom: 15,
             trailing: 15
         )
+        
         return section
     }
     
@@ -345,6 +358,7 @@ extension WeatherViewController {
             widthDimension: .fractionalWidth(1),
             heightDimension: .absolute(40)
         )
+        
         return NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerSize,
             elementKind: UICollectionView.elementKindSectionHeader,

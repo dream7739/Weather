@@ -40,7 +40,8 @@ final class CitySearchViewController: BaseViewController {
     
     override func configureUI() {
         cityCollectionView.keyboardDismissMode = .onDrag
-        cityCollectionView.backgroundColor = .red
+        cityCollectionView.backgroundColor = .black
+        cityCollectionView.showsVerticalScrollIndicator = false
     }
     
     private func bind() {

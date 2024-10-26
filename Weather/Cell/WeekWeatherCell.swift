@@ -9,12 +9,14 @@ import UIKit
 import SnapKit
 
 final class WeekWeatherCell: BaseCollectionViewCell {
+    private let seperatorView = SeperatorView()
     private let weekDayLabel = UILabel()
     private let weatherImageView = UIImageView()
     private let lowTempLabel = UILabel()
     private let highTempLabel = UILabel()
     
     override func configureHierarchy() {
+        contentView.addSubview(seperatorView)
         contentView.addSubview(weekDayLabel)
         contentView.addSubview(weatherImageView)
         contentView.addSubview(lowTempLabel)
@@ -22,9 +24,14 @@ final class WeekWeatherCell: BaseCollectionViewCell {
     }
     
     override func configureLayout() {
+        seperatorView.snp.makeConstraints { make in
+            make.top.equalTo(contentView.safeAreaLayoutGuide)
+            make.horizontalEdges.equalTo(contentView.safeAreaLayoutGuide)
+        }
+        
         weekDayLabel.snp.makeConstraints { make in
             make.centerY.equalTo(contentView.safeAreaLayoutGuide)
-            make.leading.equalTo(contentView.safeAreaLayoutGuide).offset(8)
+            make.leading.equalTo(contentView.safeAreaLayoutGuide)
         }
         
         weatherImageView.snp.makeConstraints { make in
@@ -40,7 +47,7 @@ final class WeekWeatherCell: BaseCollectionViewCell {
         
         highTempLabel.snp.makeConstraints { make in
             make.centerY.equalTo(contentView.safeAreaLayoutGuide)
-            make.trailing.equalTo(contentView.safeAreaLayoutGuide).offset(-8)
+            make.trailing.equalTo(contentView.safeAreaLayoutGuide)
         }
         
     }
@@ -51,7 +58,7 @@ final class WeekWeatherCell: BaseCollectionViewCell {
         lowTempLabel.textColor = .white
         lowTempLabel.font = .systemFont(ofSize: 18)
         highTempLabel.textColor = .white
-        highTempLabel.font = .systemFont(ofSize: 18)
+        highTempLabel.font = .systemFont(ofSize: 18, weight: .medium)
     }
     
     func configureData(_ data: WeekWeather){

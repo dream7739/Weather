@@ -12,7 +12,7 @@ final class WeatherDetailCell: BaseCollectionViewCell {
     private let titleLabel = UILabel()
     private let averageLabel = UILabel()
     private let descriptionLabel = UILabel()
-    private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+    private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
 
     override func configureHierarchy() {
         contentView.addSubview(blurEffectView)
