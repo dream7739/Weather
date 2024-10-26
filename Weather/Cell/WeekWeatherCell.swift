@@ -64,7 +64,7 @@ final class WeekWeatherCell: BaseCollectionViewCell {
     func configureData(_ data: WeekWeather){
         weekDayLabel.text = data.weekDay
         weatherImageView.image = UIImage(named: data.weather)
-        lowTempLabel.text = data.lowTemp
-        highTempLabel.text = data.highTemp
+        lowTempLabel.text = data.maxTemp
+        highTempLabel.text = data.minTemp
     }
 }

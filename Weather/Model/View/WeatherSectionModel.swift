@@ -15,6 +15,14 @@ enum WeatherSection: Int, CaseIterable {
     case detail
 }
 
+enum WeatherSectionItem {
+    case main(data: MainWeather)
+    case hour(data: HourWeather)
+    case week(data: WeekWeather)
+    case map(data: MapWeather)
+    case detail(data: DetailWeather)
+}
+
 enum WeatherSectionModel: SectionModelType {
     typealias Item = WeatherSectionItem
     
@@ -48,10 +56,4 @@ enum WeatherSectionModel: SectionModelType {
     }
 }
 
-enum WeatherSectionItem {
-    case main(data: MainWeather)
-    case hour(data: HourWeather)
-    case week(data: WeekWeather)
-    case map(data: MapWeather)
-    case detail(data: DetailWeather)
-}
+

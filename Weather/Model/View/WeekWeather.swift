@@ -10,6 +10,6 @@ import Foundation
 struct WeekWeather {
     let weekDay: String
     let weather: String
-    let lowTemp: String
-    let highTemp: String
+    let maxTemp: String
+    let minTemp: String
 }

@@ -57,7 +57,7 @@ final class WeatherDetailCell: BaseCollectionViewCell {
         titleLabel.text = data.title
         averageLabel.text = data.average
         
-        if data.title == Constant.WeatherDetailTitle.pressure.rawValue {
+        if data.title == Literal.WeatherTitle.pressure.rawValue {
             averageLabel.asFont(target: "hpa", font: .systemFont(ofSize: 25))
         }
         

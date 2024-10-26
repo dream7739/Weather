@@ -19,7 +19,6 @@ struct WeatherInfo: Decodable {
     let weather: [Weather]
     let clouds: Cloud
     let wind: Wind
-    let dt_txt: String
 }
 
 struct MainInfo: Decodable {
@@ -29,6 +28,18 @@ struct MainInfo: Decodable {
     let temp_max: Double
     let humidity: Double
     let pressure: Double
+    
+    var tempDescription: String {
+        return temp.toTempString
+    }
+    
+    var maxTempDescription: String {
+        return temp_max.toTempString
+    }
+    
+    var minTempDescription: String {
+        return temp_min.toTempString
+    }
 }
 
 struct Weather: Decodable {
@@ -52,7 +63,6 @@ struct City: Decodable {
     let name: String
     let country: String
     let coord: Coord
-    let timezone: TimeInterval
 }
 
 struct Coord: Decodable {

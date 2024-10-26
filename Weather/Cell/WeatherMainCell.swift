@@ -51,11 +51,11 @@ final class WeatherMainCell: BaseCollectionViewCell {
         cityLabel.textAlignment = .center
         cityLabel.numberOfLines = 2
         
-        temperatureLabel.font = .systemFont(ofSize: 80, weight: .medium)
+        temperatureLabel.font = .systemFont(ofSize: 80, weight: .regular)
         temperatureLabel.textColor = .white
         temperatureLabel.textAlignment = .center
         
-        descriptionLabel.font = .systemFont(ofSize: 24)
+        descriptionLabel.font = .systemFont(ofSize: 28)
         descriptionLabel.textColor = .white
         descriptionLabel.textAlignment = .center
         
@@ -68,6 +68,6 @@ final class WeatherMainCell: BaseCollectionViewCell {
         cityLabel.text = data.city
         temperatureLabel.text = data.temperature
         descriptionLabel.text = data.description
-        highLowLabel.text = "최고: \(data.highTemp) | 최저: \(data.lowTemp)"
+        highLowLabel.text = "최고: \(data.maxTemp) | 최저: \(data.minTemp)"
     }
 }

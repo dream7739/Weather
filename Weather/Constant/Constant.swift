@@ -74,11 +74,4 @@ enum Constant {
             }
         }
     }
-    
-    enum WeatherDetailTitle: String {
-        case humidity = "습도"
-        case cloud = "구름"
-        case windSpeed = "바람 속도"
-        case pressure = "기압"
-    }
 }

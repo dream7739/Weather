@@ -10,7 +10,7 @@ import SnapKit
 
 final class WeatherHeaderView: BaseReusableView {
     private let titleLabel = UILabel()
-    let seperatorView = SeperatorView()
+    private let seperatorView = SeperatorView()
     
     override func configureHierarchy() {
         addSubview(titleLabel)

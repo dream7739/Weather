@@ -12,6 +12,11 @@ enum SearchSection: Int, CaseIterable {
     case city
 }
 
+enum SearchSectionItem {
+    case recent(data: String)
+    case city(data: CityResult)
+}
+
 enum SearchSectionModel: SectionModelType {
     typealias Item = SearchSectionItem
     
@@ -36,8 +41,4 @@ enum SearchSectionModel: SectionModelType {
     }
 }
 
-enum SearchSectionItem {
-    case recent(data: String)
-    case city(data: CityResult)
-}
 

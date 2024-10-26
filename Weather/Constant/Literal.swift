@@ -27,4 +27,39 @@ enum Literal {
         static let lon = 127.004173
     }
     
+    enum Weather {
+        static let now = "지금"
+        static let today = "오늘"
+        static let maxTemp = "최소: "
+        static let minTemp = "최대: "
+        static let gust = "강풍: "
+        static let hpa = "\nhpa"
+    }
+    
+    enum WeatherTitle: String {
+        case hourWeather = "시간별 날씨예보"
+        case weekWeather = "5일간의 일기예보"
+        case mapWeather = "강수량"
+        case humidity = "습도"
+        case cloud = "구름"
+        case windSpeed = "바람 속도"
+        case pressure = "기압"
+    }
+    
+    enum RandomHeader {
+        case gust(gust: String)
+        case humidity(humidity: String)
+        case weather(weather: String, temp: String, feelsLike: String)
+ 
+        var title: String {
+            switch self {
+            case .gust(let gust):
+                return "돌풍의 풍속은 최대 \(gust)입니다."
+            case .humidity(let humidity):
+                return "현재 습도는 \(humidity)입니다."
+            case .weather(let weather, let temp, let feelsLike):
+                return "현재 날씨는 \(weather)입니다.\n현재 기온은 \(temp)이며 체감 기온은 \(feelsLike)입니다."
+            }
+        }
+    }
 }

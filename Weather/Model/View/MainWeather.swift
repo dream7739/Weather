@@ -11,6 +11,6 @@ struct MainWeather {
     let city: String
     let temperature: String
     let description: String
-    let highTemp: String
-    let lowTemp: String
+    let maxTemp: String
+    let minTemp: String
 }
