@@ -161,13 +161,14 @@ extension WeatherViewModel {
         let gustString = "돌풍의 풍속은 최대 \(gust)입니다"
         let humidityString = "현재 습도는 \(humidity)입니다"
         let weatherString = "현재 날씨는 \(weather)입니다.\n현재 기온은 \(temp)이며 체감 기온은 \(feelsLike)입니다"
+        
         let header = [
             gustString,
             humidityString,
             weatherString
         ].randomElement() ?? "시간별 날씨예보"
         
-        return weatherString
+        return header
     }
     
     private func createWeekWeather(_ weekWeather: [[WeatherInfo]]) -> WeatherSectionModel {

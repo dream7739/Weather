@@ -59,6 +59,7 @@ extension CitySearchViewModel {
         let recentSection = SearchSectionModel.recent(items: recentItem)
         return recentSection
     }
+    
     private func createCitySection(_ searchText: String) -> SearchSectionModel {
         var filteredCityList: [CityResult] = []
         if searchText.isEmpty {

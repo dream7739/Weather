@@ -21,7 +21,7 @@ final class CitySearchViewController: BaseViewController {
     let didSelectCityUpdator = PublishRelay<Coord>()
     private let viewModel = CitySearchViewModel()
     private let disposeBag = DisposeBag()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
@@ -34,14 +34,16 @@ final class CitySearchViewController: BaseViewController {
     
     override func configureLayout() {
         cityCollectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.horizontalEdges.bottom.equalToSuperview()
         }
     }
     
     override func configureUI() {
         cityCollectionView.keyboardDismissMode = .onDrag
-        cityCollectionView.backgroundColor = .black
+        cityCollectionView.backgroundColor = .theme
         cityCollectionView.showsVerticalScrollIndicator = false
+        view.backgroundColor = .theme
     }
     
     private func bind() {
@@ -95,7 +97,7 @@ extension CitySearchViewController {
                 return self?.createRecentSection()
             case .city:
                 return self?.createCitySection()
-          
+                
             }
         }
         let configuration = UICollectionViewCompositionalLayoutConfiguration()
@@ -156,7 +158,7 @@ extension CitySearchViewController {
             bottom: 0,
             trailing: 15
         )
-
+        
         return section
     }
 }

@@ -44,6 +44,8 @@ final class WeatherViewController: BaseViewController {
     }
     
     override func configureUI() {
+        navigationItem.hidesSearchBarWhenScrolling = false
+        backgroundImageView.backgroundColor = .theme
         backgroundImageView.contentMode = .scaleAspectFill
         backgroundImageView.frame = weatherCollectionView.bounds
         weatherCollectionView.backgroundView = backgroundImageView
@@ -84,7 +86,6 @@ final class WeatherViewController: BaseViewController {
             .bind(with: self) { owner, coord in
                 owner.searchController.isActive = false
                 input.callWeatherRequest.accept(coord)
-                print(coord)
             }
             .disposed(by: disposeBag)
         
@@ -107,6 +108,7 @@ extension WeatherViewController {
         navigationItem.searchController = searchController
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.backgroundColor = .clear
+        searchController.searchBar.tintColor = .white
         searchController.searchBar.searchTextField.backgroundColor = .systemGray6.withAlphaComponent(0.6)
     }
     
