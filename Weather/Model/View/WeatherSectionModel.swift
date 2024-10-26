@@ -16,46 +16,39 @@ enum WeatherSection: Int, CaseIterable {
 }
 
 enum WeatherSectionModel: SectionModelType {
-    typealias Item = SectionItem
+    typealias Item = WeatherSectionItem
     
-    case main(items: [SectionItem])
-    case hour(items: [SectionItem])
-    case week(items: [SectionItem])
-    case map(items: [SectionItem])
-    case detail(items: [SectionItem])
+    case main(items: [WeatherSectionItem])
+    case hour(header: String, items: [WeatherSectionItem])
+    case week(header: String, items: [WeatherSectionItem])
+    case map(header: String, items: [WeatherSectionItem])
+    case detail(items: [WeatherSectionItem])
     
-    var items: [SectionItem] {
+    var items: [WeatherSectionItem] {
         switch self {
-        case .main(let items):
-            return items.map { $0 }
-        case .hour(let items):
-            return items.map { $0 }
-        case .week(items: let items):
-            return items.map { $0 }
-        case .map(let items):
-            return items.map { $0 }
-        case .detail(let items):
-            return items.map { $0 }
+        case .main(let items), .hour(_, let items), .week(_, let items),
+                .map(_, let items), .detail(let items):
+            return items
         }
     }
     
-    init(original: WeatherSectionModel, items: [SectionItem]) {
+    init(original: WeatherSectionModel, items: [WeatherSectionItem]) {
         switch original {
         case .main(let items):
             self = .main(items: items)
-        case .hour(let items):
-            self = .hour(items: items)
-        case .week(let items):
-            self = .week(items: items)
-        case .map(let items):
-            self = .map(items: items)
+        case .hour(let header, let items):
+            self = .hour(header: header, items: items)
+        case .week(let header, let items):
+            self = .week(header: header, items: items)
+        case .map(let header, let items):
+            self = .map(header: header, items: items)
         case .detail(let items):
             self = .detail(items: items)
         }
     }
 }
 
-enum SectionItem {
+enum WeatherSectionItem {
     case main(data: MainWeather)
     case hour(data: HourWeather)
     case week(data: WeekWeather)

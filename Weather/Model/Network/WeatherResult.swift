@@ -24,6 +24,7 @@ struct WeatherInfo: Decodable {
 
 struct MainInfo: Decodable {
     let temp: Double
+    let feels_like: Double
     let temp_min: Double
     let temp_max: Double
     let humidity: Double

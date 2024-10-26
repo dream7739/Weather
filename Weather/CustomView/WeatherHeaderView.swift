@@ -20,7 +20,8 @@ final class WeatherHeaderView: BaseReusableView {
     override func configureLayout() {
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(15)
-            make.leading.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-8)
         }
         
         seperatorView.snp.makeConstraints { make in
@@ -31,6 +32,7 @@ final class WeatherHeaderView: BaseReusableView {
     override func configureUI() {
         titleLabel.font = .systemFont(ofSize: 14)
         titleLabel.textColor = .white
+        titleLabel.numberOfLines = 2
     }
     
     func setTitle(_ title: String) {

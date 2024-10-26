@@ -161,6 +161,7 @@ extension WeatherViewController {
             WeatherBackgroundView.self,
             forDecorationViewOfKind: WeatherBackgroundView.reuseIdentifier
         )
+        
         let configuration = UICollectionViewCompositionalLayoutConfiguration()
         configuration.interSectionSpacing = 15
         layout.configuration = configuration
@@ -192,15 +193,20 @@ extension WeatherViewController {
                 return cell
             }
         }) { dataSource, collectionView, kind, indexPath in
-            guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeatherHeaderView.reuseIdentifier, for: indexPath) as? WeatherHeaderView else {
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeatherHeaderView.reuseIdentifier, for: indexPath) as? WeatherHeaderView else {
                 return UICollectionReusableView()
             }
             
-            header.setTitle("강수량")
-            if indexPath.section == 2 {
-                header.hideSeperator()
+            switch dataSource[indexPath.section] {
+            case .main, .detail: break
+            case .hour(let header, _), .map(let header, _):
+                headerView.setTitle(header)
+            case .week(let header, _):
+                headerView.setTitle(header)
+                headerView.hideSeperator()
             }
-            return header
+        
+            return headerView
         }
     }
     
@@ -210,8 +216,10 @@ extension WeatherViewController {
             heightDimension: .estimated(200)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize,
                                                        subitems: [item])
+        
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(
             top: 30,
@@ -219,6 +227,7 @@ extension WeatherViewController {
             bottom: 0,
             trailing: 0
         )
+        
         return section
     }
     
@@ -362,7 +371,7 @@ extension WeatherViewController {
     private func createHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
         let headerSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .absolute(40)
+            heightDimension: .estimated(40)
         )
         
         return NSCollectionLayoutBoundarySupplementaryItem(

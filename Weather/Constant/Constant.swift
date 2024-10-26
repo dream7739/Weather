@@ -1,5 +1,5 @@
 //
-//  WeatherConstant.swift
+//  Constant.swift
 //  Weather
 //
 //  Created by 홍정민 on 10/24/24.

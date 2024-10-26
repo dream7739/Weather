@@ -106,7 +106,7 @@ extension WeatherViewModel {
 extension WeatherViewModel {
     private func createMainWeather(_ city: String, _ weatherInfo: WeatherInfo?) -> WeatherSectionModel {
         guard let weatherInfo else {
-            return WeatherSectionModel.map(items: [])
+            return WeatherSectionModel.main(items: [])
         }
         
         let temp = weatherInfo.main.temp.toString + "°"
@@ -122,7 +122,7 @@ extension WeatherViewModel {
             lowTemp: lowTemp
         )
         
-        let mainItem = SectionItem.main(data: mainWeather)
+        let mainItem = WeatherSectionItem.main(data: mainWeather)
         let mainSection = WeatherSectionModel.main(items: [mainItem])
         return mainSection
     }
@@ -141,9 +141,33 @@ extension WeatherViewModel {
             )
         }
         
-        let hourItemList = hourWeatherList.map { SectionItem.hour(data: $0) }
-        let hourSection = WeatherSectionModel.hour(items: hourItemList)
+        var header = ""
+        if let nowWeather = hourWeather.first {
+            header = createRandomHeader(nowWeather: nowWeather)
+        }
+        
+        let hourItemList = hourWeatherList.map { WeatherSectionItem.hour(data: $0) }
+        let hourSection = WeatherSectionModel.hour(header: header, items: hourItemList)
         return hourSection
+    }
+    
+    private func createRandomHeader(nowWeather: WeatherInfo) -> String {
+        let gust = nowWeather.wind.gust.toStatString + "m/s"
+        let humidity = nowWeather.main.humidity.toString + "%"
+        let weather = nowWeather.weather.first?.description ?? ""
+        let temp = nowWeather.main.temp.toString + "°"
+        let feelsLike = nowWeather.main.feels_like.toString + "°"
+        
+        let gustString = "돌풍의 풍속은 최대 \(gust)입니다"
+        let humidityString = "현재 습도는 \(humidity)입니다"
+        let weatherString = "현재 날씨는 \(weather)입니다.\n현재 기온은 \(temp)이며 체감 기온은 \(feelsLike)입니다"
+        let header = [
+            gustString,
+            humidityString,
+            weatherString
+        ].randomElement() ?? "시간별 날씨예보"
+        
+        return weatherString
     }
     
     private func createWeekWeather(_ weekWeather: [[WeatherInfo]]) -> WeatherSectionModel {
@@ -181,15 +205,17 @@ extension WeatherViewModel {
             weekWeatherList.append(weekWeather)
         }
         
-        let weekItemList = weekWeatherList.map { SectionItem.week(data: $0) }
-        let weekSection = WeatherSectionModel.week(items: weekItemList)
+        let header = "5일간의 일기예보"
+        let weekItemList = weekWeatherList.map { WeatherSectionItem.week(data: $0) }
+        let weekSection = WeatherSectionModel.week(header: header, items: weekItemList)
         return weekSection
     }
     
     private func createMapWeather(_ coord: Coord) -> WeatherSectionModel {
         let mapWeather = MapWeather(lat: coord.lat, lon: coord.lon)
-        let mapItem = SectionItem.map(data: mapWeather)
-        let mapSection = WeatherSectionModel.map(items: [mapItem])
+        let mapItem = WeatherSectionItem.map(data: mapWeather)
+        let header = "강수량"
+        let mapSection = WeatherSectionModel.map(header: header, items: [mapItem])
         return mapSection
     }
     
@@ -201,7 +227,7 @@ extension WeatherViewModel {
         let humidityList = weatherList.map { $0.main.humidity }
         let humidityAvg = humidityList.reduce(into: 0) { $0 += $1 } / listCount
         let humidity = humidityAvg.toString + "%"
-        let humidityItem = SectionItem.detail(
+        let humidityItem = WeatherSectionItem.detail(
             data: DetailWeather(
                 title: Constant.DetailTitle.humidity.rawValue,
                 average: humidity
@@ -212,7 +238,7 @@ extension WeatherViewModel {
         let cloudList = weatherList.map { $0.clouds.all }
         let cloudAvg = cloudList.reduce(into: 0) { $0 += $1 } / listCount
         let cloud = cloudAvg.toString + "%"
-        let cloudItem = SectionItem.detail(
+        let cloudItem = WeatherSectionItem.detail(
             data: DetailWeather(
                 title: Constant.DetailTitle.cloud.rawValue,
                 average: cloud
@@ -228,7 +254,7 @@ extension WeatherViewModel {
         let gustAvg = gustList.reduce(into: 0) { $0 += $1 } / listCount
         let gust = "강풍: " + gustAvg.toStatString + "m/s"
         
-        let windItem = SectionItem.detail(
+        let windItem = WeatherSectionItem.detail(
             data: DetailWeather(
                 title: Constant.DetailTitle.windSpeed.rawValue,
                 average: wind,
@@ -240,14 +266,14 @@ extension WeatherViewModel {
         let pressureList = weatherList.map { $0.main.pressure }
         let pressureAvg = pressureList.reduce(into: 0) { $0 += $1 } / listCount
         let pressure = Int(pressureAvg).formatted(.number) + "\nhpa"
-        let pressureItem = SectionItem.detail(
+        let pressureItem = WeatherSectionItem.detail(
             data: DetailWeather(
                 title: Constant.DetailTitle.pressure.rawValue,
                 average: pressure
             )
         )
         
-        let detailSection = WeatherSectionModel.map(
+        let detailSection = WeatherSectionModel.detail(
             items: [
                 humidityItem,
                 cloudItem,
@@ -255,6 +281,7 @@ extension WeatherViewModel {
                 pressureItem
             ]
         )
+    
         return detailSection
     }
 }
