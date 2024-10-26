@@ -110,7 +110,7 @@ extension WeatherViewModel {
         }
         
         let temp = weatherInfo.main.temp.toString + "°"
-        let description = weatherInfo.weather.first?.main ?? ""
+        let description = weatherInfo.weather.first?.description ?? ""
         let highTemp = weatherInfo.main.temp_max.toString + "°"
         let lowTemp = weatherInfo.main.temp_min.toString + "°"
         

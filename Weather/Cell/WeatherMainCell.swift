@@ -51,7 +51,7 @@ final class WeatherMainCell: BaseCollectionViewCell {
         cityLabel.textAlignment = .center
         cityLabel.numberOfLines = 2
         
-        temperatureLabel.font = .systemFont(ofSize: 60, weight: .thin)
+        temperatureLabel.font = .systemFont(ofSize: 80, weight: .medium)
         temperatureLabel.textColor = .white
         temperatureLabel.textAlignment = .center
         
