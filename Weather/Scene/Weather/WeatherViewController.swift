@@ -23,7 +23,7 @@ final class WeatherViewController: BaseViewController {
     )
     private let backgroundImageView = UIImageView()
     
-    private let viewModel = WeatherViewModel()
+    private let viewModel: WeatherViewModel
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -31,6 +31,15 @@ final class WeatherViewController: BaseViewController {
         bind()
         configureSearchController()
         configureCollectionView()
+    }
+    
+    init(viewModel: WeatherViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func configureHierarchy() {
