@@ -45,11 +45,11 @@ final class WeatherDetailCell: BaseCollectionViewCell {
         contentView.layer.cornerRadius = 12
         contentView.clipsToBounds = true
         titleLabel.textColor = .white
-        titleLabel.font = .systemFont(ofSize: 14)
+        titleLabel.font = Design.Font.secondary
         averageLabel.textColor = .white
         averageLabel.numberOfLines = 2
-        averageLabel.font = .systemFont(ofSize: 34, weight: .medium)
-        descriptionLabel.font = .systemFont(ofSize: 12)
+        averageLabel.font = Design.Font.title
+        descriptionLabel.font = Design.Font.tertiary
         descriptionLabel.textColor = .white
     }
     
@@ -58,7 +58,10 @@ final class WeatherDetailCell: BaseCollectionViewCell {
         averageLabel.text = data.average
         
         if data.title == Literal.WeatherTitle.pressure.rawValue {
-            averageLabel.asFont(target: "hpa", font: .systemFont(ofSize: 25))
+            averageLabel.asFont(
+                target: Literal.Weather.hpa,
+                font: .systemFont(ofSize: 25)
+            )
         }
         
         if let description = data.description {

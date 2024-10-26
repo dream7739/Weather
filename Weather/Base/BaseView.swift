@@ -20,7 +20,6 @@ class BaseView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     func configureHierarchy() { }
     func configureLayout() { }
     func configureUI() { }

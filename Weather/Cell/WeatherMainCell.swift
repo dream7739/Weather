@@ -46,19 +46,16 @@ final class WeatherMainCell: BaseCollectionViewCell {
     }
     
     override func configureUI() {
-        cityLabel.font = .systemFont(ofSize: 34, weight: .medium)
+        cityLabel.font = Design.Font.title
         cityLabel.textColor = .white
         cityLabel.textAlignment = .center
         cityLabel.numberOfLines = 2
-        
-        temperatureLabel.font = .systemFont(ofSize: 80, weight: .regular)
+        temperatureLabel.font = .systemFont(ofSize: 80)
         temperatureLabel.textColor = .white
         temperatureLabel.textAlignment = .center
-        
-        descriptionLabel.font = .systemFont(ofSize: 28)
+        descriptionLabel.font = Design.Font.title
         descriptionLabel.textColor = .white
         descriptionLabel.textAlignment = .center
-        
         highLowLabel.font = .systemFont(ofSize: 20)
         highLowLabel.textColor = .white
         highLowLabel.textAlignment = .center
@@ -68,6 +65,6 @@ final class WeatherMainCell: BaseCollectionViewCell {
         cityLabel.text = data.city
         temperatureLabel.text = data.temperature
         descriptionLabel.text = data.description
-        highLowLabel.text = "최고: \(data.maxTemp) | 최저: \(data.minTemp)"
+        highLowLabel.text = data.tempDescription
     }
 }

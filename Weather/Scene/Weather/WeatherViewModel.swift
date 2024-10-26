@@ -265,7 +265,7 @@ extension WeatherViewModel {
         
         let pressureList = weatherList.map { $0.main.pressure }
         let pressureAvg = pressureList.reduce(into: 0) { $0 += $1 } / listCount
-        let pressure = Int(pressureAvg).formatted(.number) + Literal.Weather.hpa
+        let pressure = Int(pressureAvg).formatted(.number) + "\n" + Literal.Weather.hpa
         let pressureItem = WeatherSectionItem.detail(
             data: DetailWeather(
                 title: Literal.WeatherTitle.pressure.rawValue,

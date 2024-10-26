@@ -37,9 +37,9 @@ final class CitySearchCell: BaseCollectionViewCell {
     }
     
     override func configureUI() {
-        cityLabel.font = .boldSystemFont(ofSize: 14)
+        cityLabel.font = Design.Font.secondaryBold
         cityLabel.textColor = .white
-        countryLabel.font = .systemFont(ofSize: 12)
+        countryLabel.font = Design.Font.tertiary
         countryLabel.textColor = .white
     }
     

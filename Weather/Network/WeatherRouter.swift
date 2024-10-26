@@ -13,7 +13,6 @@ enum WeatherRouter {
 }
 
 extension WeatherRouter: TargetType {
-    
     var baseURL: String {
         return APIURL.forecast
     }

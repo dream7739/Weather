@@ -30,10 +30,10 @@ enum Literal {
     enum Weather {
         static let now = "지금"
         static let today = "오늘"
-        static let maxTemp = "최소: "
-        static let minTemp = "최대: "
+        static let maxTemp = "최대: "
+        static let minTemp = "최소: "
         static let gust = "강풍: "
-        static let hpa = "\nhpa"
+        static let hpa = "hpa"
     }
     
     enum WeatherTitle: String {

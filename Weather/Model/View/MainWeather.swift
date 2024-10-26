@@ -13,4 +13,8 @@ struct MainWeather {
     let description: String
     let maxTemp: String
     let minTemp: String
+    
+    var tempDescription: String {
+        return "최고: \(maxTemp) | 최저: \(minTemp)"
+    }
 }

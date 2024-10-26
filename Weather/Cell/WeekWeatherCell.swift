@@ -54,17 +54,17 @@ final class WeekWeatherCell: BaseCollectionViewCell {
     
     override func configureUI() {
         weekDayLabel.textColor = .white
-        weekDayLabel.font = .systemFont(ofSize: 18)
+        weekDayLabel.font = Design.Font.primaryBold
         lowTempLabel.textColor = .white
-        lowTempLabel.font = .systemFont(ofSize: 18)
+        lowTempLabel.font = Design.Font.primary
         highTempLabel.textColor = .white
-        highTempLabel.font = .systemFont(ofSize: 18, weight: .medium)
+        highTempLabel.font = Design.Font.primaryBold
     }
     
     func configureData(_ data: WeekWeather){
         weekDayLabel.text = data.weekDay
         weatherImageView.image = UIImage(named: data.weather)
-        lowTempLabel.text = data.maxTemp
-        highTempLabel.text = data.minTemp
+        lowTempLabel.text = data.minTemp
+        highTempLabel.text = data.maxTemp
     }
 }
