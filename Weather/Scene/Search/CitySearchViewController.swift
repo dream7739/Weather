@@ -19,13 +19,22 @@ final class CitySearchViewController: BaseViewController {
     
     let searchResultUpdator = PublishRelay<String>()
     let didSelectCityUpdator = PublishRelay<Coord>()
-    private let viewModel = CitySearchViewModel()
+    private let viewModel: CitySearchViewModel
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
         configureCollectionView()
+    }
+    
+    init(viewModel: CitySearchViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func configureHierarchy() {
@@ -51,7 +60,8 @@ final class CitySearchViewController: BaseViewController {
             jsonParseRequest: BehaviorRelay(
                 value: Literal.Json.fileName
             ),
-            searchResultUpdator: searchResultUpdator
+            searchResultUpdator: searchResultUpdator,
+            saveRecentSearch: PublishRelay<CityResult>()
         )
         
         let output = viewModel.transform(input: input)
@@ -64,6 +74,7 @@ final class CitySearchViewController: BaseViewController {
                 case .recent(let data):
                     print(data)
                 case .city(let data):
+                    input.saveRecentSearch.accept(data)
                     owner.didSelectCityUpdator.accept(data.coord)
                 }
             }
@@ -117,7 +128,7 @@ extension CitySearchViewController {
             switch dataSource[indexPath] {
             case .recent(let data):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecentSearchCell.reuseIdentifier, for: indexPath) as? RecentSearchCell else { return UICollectionViewCell() }
-                cell.configureData("")
+                cell.configureData(data)
                 return cell
             case .city(let data):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CitySearchCell.reuseIdentifier, for: indexPath) as? CitySearchCell else { return UICollectionViewCell() }
@@ -139,13 +150,13 @@ extension CitySearchViewController {
                                                        subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(
-            top: 0,
+            top: 10,
             leading: 15,
             bottom: 0,
             trailing: 15
         )
         section.orthogonalScrollingBehavior = .continuous
-        section.interGroupSpacing = 4
+        section.interGroupSpacing = 6
         return section
     }
     

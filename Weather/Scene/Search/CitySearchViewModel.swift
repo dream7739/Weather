@@ -13,10 +13,11 @@ final class CitySearchViewModel: BaseViewModel {
     struct Input {
         let jsonParseRequest: BehaviorRelay<String>
         let searchResultUpdator: PublishRelay<String>
+        let saveRecentSearch: PublishRelay<CityResult>
     }
     
     struct Output {
-        let presentError: BehaviorRelay<String>
+        let presentError: PublishRelay<String>
         let sections: BehaviorRelay<[SearchSectionModel]>
     }
     
@@ -24,14 +25,14 @@ final class CitySearchViewModel: BaseViewModel {
     var disposeBag = DisposeBag()
     
     func transform(input: Input) -> Output {
-        let presentError = BehaviorRelay<String>(value: "")
+        let presentError = PublishRelay<String>()
+        let scrollToTop = PublishRelay<Void>()
         let sections = BehaviorRelay<[SearchSectionModel]>(value: [])
         
         input.jsonParseRequest
             .flatMap { fileName in
                 JsonParseManager.shared.parseJSONFromFile(fileName: fileName)
                     .catch { error in
-                        presentError.accept(Literal.Message.json)
                         return Single.never()
                     }
             }
@@ -46,17 +47,27 @@ final class CitySearchViewModel: BaseViewModel {
                 if owner.cityList.isEmpty {
                     presentError.accept(Literal.Message.json)
                 } else {
-                    let recentSection = owner.createRecentSearch()
+                    let recentSection = owner.createRecentSection()
                     let citySection = owner.createCitySection(searchText)
                     let section = [recentSection, citySection]
                     sections.accept(section)
+                    scrollToTop.accept(())
                 }
             }
             .disposed(by: disposeBag)
         
+        input.saveRecentSearch
+            .bind(with: self) { owner, item in
+                UserManager.recentList[item.id] = RecentSearch(
+                    name: item.name,
+                    coord: item.coord,
+                    saveDate: Date()
+                )
+            }
+            .disposed(by: disposeBag)
         
         return Output(
-            presentError: presentError,
+            presentError: presentError, 
             sections: sections
         )
     }
@@ -64,8 +75,9 @@ final class CitySearchViewModel: BaseViewModel {
 }
 
 extension CitySearchViewModel {
-    private func createRecentSearch() -> SearchSectionModel {
-        let recentItem = Set<String>().map { SearchSectionItem.recent(data: $0) }
+    private func createRecentSection() -> SearchSectionModel {
+        let recentList = UserManager.recentList.sorted { $0.value.saveDate > $1.value.saveDate }
+        let recentItem = recentList.map { SearchSectionItem.recent(data: $0.value.name) }
         let recentSection = SearchSectionModel.recent(items: recentItem)
         return recentSection
     }

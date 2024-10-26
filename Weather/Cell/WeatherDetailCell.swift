@@ -42,6 +42,7 @@ final class WeatherDetailCell: BaseCollectionViewCell {
     }
     
     override func configureUI() {
+        blurEffectView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
         contentView.layer.cornerRadius = 12
         contentView.clipsToBounds = true
         titleLabel.textColor = .white

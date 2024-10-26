@@ -15,7 +15,7 @@ final class WeatherViewModel: BaseViewModel {
     }
     
     struct Output {
-        let presentError: BehaviorRelay<String>
+        let presentError: PublishRelay<String>
         let setBackgroundImage: PublishRelay<Int>
         let sections: BehaviorRelay<[WeatherSectionModel]>
     }
@@ -23,7 +23,7 @@ final class WeatherViewModel: BaseViewModel {
     var disposeBag = DisposeBag()
     
     func transform(input: Input) -> Output {
-        let presentError = BehaviorRelay<String>(value: "")
+        let presentError = PublishRelay<String>()
         let sections = BehaviorRelay<[WeatherSectionModel]>(value: [])
         let setBackgroundImage = PublishRelay<Int>()
         

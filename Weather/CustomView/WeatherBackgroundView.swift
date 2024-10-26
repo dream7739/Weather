@@ -22,6 +22,7 @@ final class WeatherBackgroundView: BaseReusableView {
     }
     
     override func configureUI() {
+        blurEffectView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
         layer.cornerRadius = 10
         clipsToBounds = true
     }

@@ -13,7 +13,9 @@ import SnapKit
 import Toast
 
 final class WeatherViewController: BaseViewController {
-    private let cityViewController = CitySearchViewController()
+    private let cityViewController = CitySearchViewController(
+        viewModel: CitySearchViewModel()
+    )
     private lazy var searchController = UISearchController(
         searchResultsController: cityViewController
     )
@@ -222,9 +224,9 @@ extension WeatherViewController {
             
             switch dataSource[indexPath.section] {
             case .main, .detail: break
-            case .hour(let header, _), .map(let header, _):
+            case .hour(let header, _):
                 headerView.setTitle(header)
-            case .week(let header, _):
+            case .week(let header, _), .map(let header, _):
                 headerView.setTitle(header)
                 headerView.hideSeperator()
             }

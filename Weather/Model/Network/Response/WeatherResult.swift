@@ -65,7 +65,7 @@ struct City: Decodable {
     let coord: Coord
 }
 
-struct Coord: Decodable {
+struct Coord: Codable {
     let lat: Double
     let lon: Double
 }
