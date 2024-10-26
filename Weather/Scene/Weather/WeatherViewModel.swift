@@ -40,7 +40,7 @@ final class WeatherViewModel: BaseViewModel {
                         response: WeatherResult.self
                     )
                 } else {
-                    presentError.accept(ErrorMessage.network)
+                    presentError.accept(Literal.Message.network)
                     return Single<Result<WeatherResult, Error>>.never()
                 }
             }
@@ -72,7 +72,7 @@ final class WeatherViewModel: BaseViewModel {
                     
                     sections.accept(sectionModel)
                 case .failure:
-                    presentError.accept(ErrorMessage.network)
+                    presentError.accept(Literal.Message.network)
                 }
             }
             .disposed(by: disposeBag)

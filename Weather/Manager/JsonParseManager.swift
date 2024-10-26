@@ -8,27 +8,22 @@
 import Foundation
 import RxSwift
 
-enum JsonParseError: Error, LocalizedError {
-    case failFileLocation
-    case failDataDecoding
-    
-    var errorDescription: String? {
-        switch self {
-        case .failFileLocation:
-            return "파일을 찾을 수 없습니다."
-        case .failDataDecoding:
-            return "데이터 디코딩에 실패하였습니다."
-        }
-    }
-}
 
 final class JsonParseManager {
+    enum JsonParseError: Error {
+        case failFileLocation
+        case failDataDecoding
+    }
+    
     static let shared = JsonParseManager()
     private init() { }
     
     func parseJSONFromFile(fileName: String) -> Single<[CityResult]> {
         return Single<[CityResult]>.create { observer in
-            guard let url = Bundle.main.url(forResource: fileName, withExtension: "json") else {
+            guard let url = Bundle.main.url(
+                forResource: fileName,
+                withExtension: Literal.Json.fileExtension
+            ) else {
                 observer(.failure(JsonParseError.failFileLocation))
                 return Disposables.create()
             }

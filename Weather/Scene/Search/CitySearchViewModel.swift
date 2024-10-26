@@ -16,6 +16,7 @@ final class CitySearchViewModel: BaseViewModel {
     }
     
     struct Output {
+        let presentError: BehaviorRelay<String>
         let sections: BehaviorRelay<[SearchSectionModel]>
     }
     
@@ -23,12 +24,14 @@ final class CitySearchViewModel: BaseViewModel {
     var disposeBag = DisposeBag()
     
     func transform(input: Input) -> Output {
+        let presentError = BehaviorRelay<String>(value: "")
         let sections = BehaviorRelay<[SearchSectionModel]>(value: [])
         
         input.jsonParseRequest
             .flatMap { fileName in
                 JsonParseManager.shared.parseJSONFromFile(fileName: fileName)
                     .catch { error in
+                        presentError.accept(Literal.Message.json)
                         return Single.never()
                     }
             }
@@ -40,15 +43,22 @@ final class CitySearchViewModel: BaseViewModel {
         input.searchResultUpdator
             .map { $0.trimmingCharacters(in: .whitespaces) }
             .bind(with: self) { owner, searchText in
-                let recentSection = owner.createRecentSearch()
-                let citySection = owner.createCitySection(searchText)
-                let section = [recentSection, citySection]
-                sections.accept(section)
+                if owner.cityList.isEmpty {
+                    presentError.accept(Literal.Message.json)
+                } else {
+                    let recentSection = owner.createRecentSearch()
+                    let citySection = owner.createCitySection(searchText)
+                    let section = [recentSection, citySection]
+                    sections.accept(section)
+                }
             }
             .disposed(by: disposeBag)
         
         
-        return Output(sections: sections)
+        return Output(
+            presentError: presentError,
+            sections: sections
+        )
     }
     
 }

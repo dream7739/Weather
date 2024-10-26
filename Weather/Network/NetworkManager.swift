@@ -25,7 +25,6 @@ final class NetworkManager {
                     case .success(let value):
                         observer(.success(.success(value)))
                     case .failure(let error):
-                        print(error)
                         observer(.success(.failure(error)))
                     }
                 }

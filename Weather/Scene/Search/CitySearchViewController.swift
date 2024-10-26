@@ -49,7 +49,7 @@ final class CitySearchViewController: BaseViewController {
     private func bind() {
         let input = CitySearchViewModel.Input(
             jsonParseRequest: BehaviorRelay(
-                value: Constant.jsonFileName
+                value: Literal.Json.fileName
             ),
             searchResultUpdator: searchResultUpdator
         )
@@ -66,6 +66,12 @@ final class CitySearchViewController: BaseViewController {
                 case .city(let data):
                     owner.didSelectCityUpdator.accept(data.coord)
                 }
+            }
+            .disposed(by: disposeBag)
+        
+        output.presentError
+            .bind(with: self) { owner, message in
+                owner.view.makeToast(message)
             }
             .disposed(by: disposeBag)
         
