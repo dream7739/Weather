@@ -247,7 +247,7 @@ extension WeatherViewModel {
         let humidity = humidityAvg.toString + "%"
         let humidityItem = WeatherSectionItem.detail(
             data: DetailWeather(
-                title: Constant.DetailTitle.humidity.rawValue,
+                title: Constant.WeatherDetailTitle.humidity.rawValue,
                 average: humidity
             )
         )
@@ -258,7 +258,7 @@ extension WeatherViewModel {
         let cloud = cloudAvg.toString + "%"
         let cloudItem = WeatherSectionItem.detail(
             data: DetailWeather(
-                title: Constant.DetailTitle.cloud.rawValue,
+                title: Constant.WeatherDetailTitle.cloud.rawValue,
                 average: cloud
             )
         )
@@ -274,7 +274,7 @@ extension WeatherViewModel {
         
         let windItem = WeatherSectionItem.detail(
             data: DetailWeather(
-                title: Constant.DetailTitle.windSpeed.rawValue,
+                title: Constant.WeatherDetailTitle.windSpeed.rawValue,
                 average: wind,
                 description: gust
             )
@@ -286,7 +286,7 @@ extension WeatherViewModel {
         let pressure = Int(pressureAvg).formatted(.number) + "\nhpa"
         let pressureItem = WeatherSectionItem.detail(
             data: DetailWeather(
-                title: Constant.DetailTitle.pressure.rawValue,
+                title: Constant.WeatherDetailTitle.pressure.rawValue,
                 average: pressure
             )
         )

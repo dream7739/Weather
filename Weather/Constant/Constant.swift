@@ -8,7 +8,6 @@
 import Foundation
 
 enum Constant {
-    
     enum WeatherIcon: String {
         case clearSky = "01d"
         case fewClouds = "02d"
@@ -76,7 +75,7 @@ enum Constant {
         }
     }
     
-    enum DetailTitle: String {
+    enum WeatherDetailTitle: String {
         case humidity = "습도"
         case cloud = "구름"
         case windSpeed = "바람 속도"

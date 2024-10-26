@@ -20,11 +20,8 @@ enum SearchSectionModel: SectionModelType {
    
     var items: [SearchSectionItem] {
         switch self {
-        case .recent(let items):
-            return items.map { $0 }
-        case .city(let items):
-            return items.map { $0 }
-     
+        case .recent(let items), .city(let items):
+            return items
         }
     }
     

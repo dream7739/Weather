@@ -53,32 +53,32 @@ final class WeatherViewController: BaseViewController {
         weatherCollectionView.showsVerticalScrollIndicator = false
     }
     
-    func bind() {
+    private func bind() {
         let input = WeatherViewModel.Input(
             callWeatherRequest: BehaviorRelay(
                 value: Coord(
-                    lat: 36.783611,
-                    lon: 127.004173
+                    lat: Literal.InitialCoord.lat,
+                    lon: Literal.InitialCoord.lon
                 )
             )
         )
-        
         let output = viewModel.transform(input: input)
         let dataSource = configureDataSource()
         
         searchController.rx.present
             .bind(with: self) { owner, _ in
-                guard let resultController = owner.searchController.searchResultsController as? CitySearchViewController else { return }
+                guard let resultController = owner.searchController.searchResultsController as? CitySearchViewController 
+                else { return }
                 resultController.searchResultUpdator.accept("")
                 owner.searchController.showsSearchResultsController = true
             }
             .disposed(by: disposeBag)
         
-        searchController.searchBar.rx
-            .text
+        searchController.searchBar.rx.text
             .orEmpty
             .bind(with: self) { owner, searchText in
-                guard let resultController = owner.searchController.searchResultsController as? CitySearchViewController else { return }
+                guard let resultController = owner.searchController.searchResultsController as? CitySearchViewController 
+                else { return }
                 resultController.searchResultUpdator.accept(searchText)
             }
             .disposed(by: disposeBag)
@@ -111,7 +111,7 @@ final class WeatherViewController: BaseViewController {
 
 extension WeatherViewController {
     private func configureSearchController() {
-        searchController.searchBar.placeholder = "Search"
+        searchController.searchBar.placeholder = Literal.Placeholder.search
         navigationItem.searchController = searchController
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.backgroundColor = .clear
@@ -141,9 +141,10 @@ extension WeatherViewController {
             forCellWithReuseIdentifier: WeatherDetailCell.reuseIdentifier
         )
         
-        weatherCollectionView.register(WeatherHeaderView.self,
-                                       forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                       withReuseIdentifier: WeatherHeaderView.reuseIdentifier)
+        weatherCollectionView.register(
+            WeatherHeaderView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: WeatherHeaderView.reuseIdentifier)
     }
     
 }
@@ -156,9 +157,9 @@ extension WeatherViewController {
             case .main:
                 return self?.createMainSection()
             case .hour:
-                return self?.createHourlySection()
+                return self?.createHourSection()
             case .week:
-                return self?.createWeeklySection()
+                return self?.createWeekSection()
             case .map:
                 return self?.createMapSection()
             case .detail:
@@ -181,30 +182,34 @@ extension WeatherViewController {
         return RxCollectionViewSectionedReloadDataSource(configureCell:  { dataSource, collectionView, indexPath, _ in
             switch dataSource[indexPath] {
             case .main(let data):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherMainCell.reuseIdentifier, for: indexPath) as? WeatherMainCell else { return UICollectionViewCell() }
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherMainCell.reuseIdentifier, for: indexPath) as? WeatherMainCell 
+                else { return UICollectionViewCell() }
                 cell.configureData(data)
                 return cell
             case .hour(let data):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HourWeatherCell.reuseIdentifier, for: indexPath) as? HourWeatherCell else { return UICollectionViewCell() }
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HourWeatherCell.reuseIdentifier, for: indexPath) as? HourWeatherCell 
+                else { return UICollectionViewCell() }
                 cell.configureData(data)
                 return cell
             case .week(let data):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeekWeatherCell.reuseIdentifier, for: indexPath) as? WeekWeatherCell else { return UICollectionViewCell() }
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeekWeatherCell.reuseIdentifier, for: indexPath) as? WeekWeatherCell 
+                else { return UICollectionViewCell() }
                 cell.configureData(data)
                 return cell
             case .map(let data):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherMapCell.reuseIdentifier, for: indexPath) as? WeatherMapCell else { return UICollectionViewCell() }
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherMapCell.reuseIdentifier, for: indexPath) as? WeatherMapCell 
+                else { return UICollectionViewCell() }
                 cell.configureData(data)
                 return cell
             case .detail(let data):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherDetailCell.reuseIdentifier, for: indexPath) as? WeatherDetailCell else { return UICollectionViewCell() }
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherDetailCell.reuseIdentifier, for: indexPath) as? WeatherDetailCell 
+                else { return UICollectionViewCell() }
                 cell.configureData(data)
                 return cell
             }
         }) { dataSource, collectionView, kind, indexPath in
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeatherHeaderView.reuseIdentifier, for: indexPath) as? WeatherHeaderView else {
-                return UICollectionReusableView()
-            }
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: WeatherHeaderView.reuseIdentifier, for: indexPath) as? WeatherHeaderView 
+            else { return UICollectionReusableView() }
             
             switch dataSource[indexPath.section] {
             case .main, .detail: break
@@ -226,8 +231,10 @@ extension WeatherViewController {
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize,
-                                                       subitems: [item])
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: itemSize,
+            subitems: [item]
+        )
         
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(
@@ -240,22 +247,31 @@ extension WeatherViewController {
         return section
     }
     
-    private func createHourlySection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.15),
-                                              heightDimension: .absolute(104))
+    private func createHourSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(0.15),
+            heightDimension: .absolute(104)
+        )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .absolute(104))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .absolute(104)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: groupSize,
+            subitems: [item]
+        )
         group.contentInsets = NSDirectionalEdgeInsets(
             top: 4,
             leading: 20,
             bottom: 0,
             trailing: 0
         )
+        
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+        
         let header = createHeader()
         header.contentInsets = NSDirectionalEdgeInsets(
             top: 0,
@@ -265,18 +281,21 @@ extension WeatherViewController {
         )
         section.boundarySupplementaryItems = [header]
         
-        let backgroundItem = NSCollectionLayoutDecorationItem.background(elementKind: WeatherBackgroundView.reuseIdentifier)
-        backgroundItem.contentInsets =  NSDirectionalEdgeInsets(
+        let backgroundItem = NSCollectionLayoutDecorationItem.background(
+            elementKind: WeatherBackgroundView.reuseIdentifier
+        )
+        backgroundItem.contentInsets = NSDirectionalEdgeInsets(
             top: 0,
             leading: 15,
             bottom: 0,
             trailing: 15
         )
         section.decorationItems = [backgroundItem]
+        
         return section
     }
     
-    private func createWeeklySection() -> NSCollectionLayoutSection {
+    private func createWeekSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .absolute(44)
@@ -320,8 +339,9 @@ extension WeatherViewController {
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize,
-                                                       subitems: [item])
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: itemSize,subitems: [item]
+        )
         
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(
