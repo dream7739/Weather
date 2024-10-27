@@ -17,7 +17,7 @@ final class RecentSearchCell: BaseCollectionViewCell {
     
     override func configureLayout() {
         recentKeywordLabel.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(10)
+            make.edges.equalToSuperview().inset(8)
         }
     }
     

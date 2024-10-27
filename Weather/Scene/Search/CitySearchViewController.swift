@@ -16,6 +16,7 @@ final class CitySearchViewController: BaseViewController {
         frame: .zero,
         collectionViewLayout: createLayout()
     )
+    private let emptyResultView = EmptyResultView()
     
     let searchResultUpdator = PublishRelay<String>()
     let didSelectCityUpdator = PublishRelay<Coord>()
@@ -60,11 +61,17 @@ final class CitySearchViewController: BaseViewController {
     
     override func configureHierarchy() {
         view.addSubview(cityCollectionView)
+        view.addSubview(emptyResultView)
     }
     
     override func configureLayout() {
         cityCollectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
+            make.horizontalEdges.bottom.equalToSuperview()
+        }
+        
+        emptyResultView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(40)
             make.horizontalEdges.bottom.equalToSuperview()
         }
     }
@@ -109,6 +116,11 @@ final class CitySearchViewController: BaseViewController {
         
         output.sections
             .bind(to: cityCollectionView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+        
+        output.sections
+            .map { $0.count >= 2 && !$0[1].items.isEmpty }
+            .bind(to: emptyResultView.rx.isHidden)
             .disposed(by: disposeBag)
     }
 }
@@ -162,11 +174,11 @@ extension CitySearchViewController {
     private func createRecentSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .estimated(50),
-            heightDimension: .absolute(30)
+            heightDimension: .estimated(30)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(340),
-                                               heightDimension: .absolute(30))
+                                               heightDimension: .estimated(30))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
                                                        subitems: [item])
         let section = NSCollectionLayoutSection(group: group)

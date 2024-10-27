@@ -64,6 +64,7 @@
 		88D122412CCCB3C000389F0B /* WeatherRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D122402CCCB3C000389F0B /* WeatherRequest.swift */; };
 		88D122432CCCB42E00389F0B /* QueryParam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D122422CCCB42E00389F0B /* QueryParam.swift */; };
 		88D122452CCCB6DB00389F0B /* Literal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D122442CCCB6DB00389F0B /* Literal.swift */; };
+		88E8982F2CCDEDB40038A48A /* EmptyResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E8982E2CCDEDB40038A48A /* EmptyResultView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -120,6 +121,7 @@
 		88D122402CCCB3C000389F0B /* WeatherRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRequest.swift; sourceTree = "<group>"; };
 		88D122422CCCB42E00389F0B /* QueryParam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryParam.swift; sourceTree = "<group>"; };
 		88D122442CCCB6DB00389F0B /* Literal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Literal.swift; sourceTree = "<group>"; };
+		88E8982E2CCDEDB40038A48A /* EmptyResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyResultView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,6 +240,7 @@
 				884021A52CC9E29600155DE8 /* WeatherHeaderView.swift */,
 				889EEAE72CCA594900688A65 /* WeatherBackgroundView.swift */,
 				88C0E38E2CCBB6E10016397C /* SeperatorView.swift */,
+				88E8982E2CCDEDB40038A48A /* EmptyResultView.swift */,
 			);
 			path = CustomView;
 			sourceTree = "<group>";
@@ -510,6 +513,7 @@
 				884021A82CC9EAE900155DE8 /* WeatherSectionModel.swift in Sources */,
 				88A398BA2CC8E58200EFED0D /* APIKey.swift in Sources */,
 				88A731922CCD7ABE00A71380 /* NetworkMonitor.swift in Sources */,
+				88E8982F2CCDEDB40038A48A /* EmptyResultView.swift in Sources */,
 				88C0E3932CCC07AB0016397C /* BaseReusableView.swift in Sources */,
 				88A3989A2CC8B25500EFED0D /* SceneDelegate.swift in Sources */,
 				88A398E42CC9154100EFED0D /* HourWeather.swift in Sources */,
