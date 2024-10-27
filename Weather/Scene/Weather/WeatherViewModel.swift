@@ -15,7 +15,7 @@ final class WeatherViewModel: BaseViewModel {
     }
     
     struct Output {
-        let presentError: PublishRelay<String>
+        let presentError: BehaviorRelay<String>
         let setBackgroundImage: PublishRelay<Int>
         let sections: BehaviorRelay<[WeatherSectionModel]>
     }
@@ -23,11 +23,18 @@ final class WeatherViewModel: BaseViewModel {
     var disposeBag = DisposeBag()
     
     func transform(input: Input) -> Output {
-        let presentError = PublishRelay<String>()
+        let presentError = BehaviorRelay<String>(value: "")
         let sections = BehaviorRelay<[WeatherSectionModel]>(value: [])
         let setBackgroundImage = PublishRelay<Int>()
         
         input.callWeatherRequest
+            .filter { _ in
+                if !NetworkMonitor.shared.isConnected {
+                     presentError.accept(Literal.Message.disabled)
+                     return false
+                 }
+                 return true 
+             }
             .map { coord in
                 let request = WeatherRequest(lat: coord.lat, lon: coord.lon)
                 let urlRequest = try? WeatherRouter.forecast(request: request).asURLRequest()
@@ -49,9 +56,8 @@ final class WeatherViewModel: BaseViewModel {
                 case .success(let value):
                     let coord = value.city.coord
                     
-                    let correntWeather = owner.configureCurrentWeather(value)
-                    if let correntWeather {
-                        let weatherCondition = correntWeather.weather.first?.id ?? 0
+                    let currentWeather = owner.configureCurrentWeather(value)
+                    if let weatherCondition = currentWeather?.weather.first?.id {
                         setBackgroundImage.accept(weatherCondition)
                     }
 

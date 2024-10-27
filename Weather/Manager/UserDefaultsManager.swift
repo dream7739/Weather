@@ -48,7 +48,7 @@ final class UserManager {
         key: "recentList",
         storage: .standard
     )
-    var recentList: [Int: RecentSearch]
+    private var recentList: [Int: RecentSearch]
     
     func isExceedCountLimit() -> Bool {
         return recentList.count > 20
@@ -70,4 +70,7 @@ final class UserManager {
         return list
     }
     
+    func getListCount() -> Int {
+        return recentList.count
+    }
 }

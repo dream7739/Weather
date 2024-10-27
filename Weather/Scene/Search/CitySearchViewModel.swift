@@ -21,12 +21,11 @@ final class CitySearchViewModel: BaseViewModel {
         let sections: BehaviorRelay<[SearchSectionModel]>
     }
     
-    private var cityList: [CityResult] = []
+    var cityList: [CityResult] = []
     var disposeBag = DisposeBag()
     
     func transform(input: Input) -> Output {
         let presentError = PublishRelay<String>()
-        let scrollToTop = PublishRelay<Void>()
         let sections = BehaviorRelay<[SearchSectionModel]>(value: [])
         
         input.jsonParseRequest
@@ -51,7 +50,6 @@ final class CitySearchViewModel: BaseViewModel {
                     let citySection = owner.createCitySection(searchText)
                     let section = [recentSection, citySection]
                     sections.accept(section)
-                    scrollToTop.accept(())
                 }
             }
             .disposed(by: disposeBag)

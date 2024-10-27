@@ -94,6 +94,18 @@ final class WeatherViewController: BaseViewController {
             }
             .disposed(by: disposeBag)
         
+        Observable.zip(searchController.rx.didDismiss, cityViewController.didSelectCityUpdator)
+            .bind(with: self) { owner, _ in
+                if !output.sections.value.isEmpty {
+                    owner.weatherCollectionView.scrollToItem(
+                        at: IndexPath(item: 0, section: 0),
+                        at: .top,
+                        animated: false
+                    )
+                }
+            }
+            .disposed(by: disposeBag)
+        
         cityViewController.didSelectCityUpdator
             .bind(with: self) { owner, coord in
                 owner.searchController.isActive = false
@@ -103,7 +115,9 @@ final class WeatherViewController: BaseViewController {
         
         output.presentError
             .bind(with: self) { owner, message in
-                owner.view.makeToast(message)
+                if !message.isEmpty {
+                    owner.view.makeToast(message)
+                }
             }
             .disposed(by: disposeBag)
         

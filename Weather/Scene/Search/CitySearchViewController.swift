@@ -28,6 +28,27 @@ final class CitySearchViewController: BaseViewController {
         configureCollectionView()
     }
     
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
+        
+        if UserManager.shared.getListCount() > 0 {
+            cityCollectionView.scrollToItem(
+                at: IndexPath(item: 0, section: 0),
+                at: .top,
+                animated: false
+            )
+            return
+        }
+        
+        if !viewModel.cityList.isEmpty {
+            cityCollectionView.scrollToItem(
+                at: IndexPath(item: 0, section: 1),
+                at: .top,
+                animated: false
+            )
+        }
+    }
+    
     init(viewModel: CitySearchViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
