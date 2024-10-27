@@ -205,7 +205,7 @@
 				88A398B42CC8E41A00EFED0D /* Protocol */,
 				88A398B32CC8E40F00EFED0D /* Base */,
 				88A398B22CC8E33400EFED0D /* CustomView */,
-				88A398B12CC8E32A00EFED0D /* Scene */,
+				88A398B12CC8E32A00EFED0D /* Presentation */,
 				88A398B02CC8E32200EFED0D /* Extension */,
 				88A398A02CC8B25600EFED0D /* Assets.xcassets */,
 				88A398A22CC8B25600EFED0D /* LaunchScreen.storyboard */,
@@ -225,13 +225,13 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
-		88A398B12CC8E32A00EFED0D /* Scene */ = {
+		88A398B12CC8E32A00EFED0D /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
 				88A398B72CC8E52100EFED0D /* Search */,
 				88A398B62CC8E51800EFED0D /* Weather */,
 			);
-			path = Scene;
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 		88A398B22CC8E33400EFED0D /* CustomView */ = {
